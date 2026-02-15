@@ -45,11 +45,12 @@ htmlcov/
 *.LRV
 *.THM
 
-# Raw/processed footage directories
-01_RAW/
-02_NORMALIZED/
-02_PROXIES/
-04_EXPORTS/
+# Flight data — raw/processed footage (large, not tracked in git)
+**/01_RAW/
+**/02_NORMALIZED/
+**/02_PROXIES/
+**/03_PROJECT/
+**/04_EXPORTS/
 
 # Ruff
 .ruff_cache/
