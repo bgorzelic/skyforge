@@ -1,0 +1,38 @@
+{
+  "source_file": "/Users/bgorzelic/dev/projects/aiaerialsolutions.com/Horizon by Yosemite/flights/2nd Flight/02_NORMALIZED/Drone/PTSC_0019_norm.mp4",
+  "duration": 1.4,
+  "width": 3840,
+  "height": 2160,
+  "fps": 30.0,
+  "has_audio": false,
+  "codec": "h264",
+  "scene_changes": [],
+  "frame_analyses": [
+    {
+      "timestamp": 0.0,
+      "blur_score": 91.22,
+      "brightness": 125.91,
+      "contrast": 61.91,
+      "motion_score": 0.0,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 1.0,
+      "blur_score": 117.35,
+      "brightness": 125.76,
+      "contrast": 61.8,
+      "motion_score": 4.13,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    }
+  ],
+  "audio_peaks": [],
+  "avg_blur": 104.28,
+  "avg_brightness": 125.84,
+  "avg_motion": 2.06,
+  "dark_ratio": 0.0,
+  "blurry_ratio": 0.0
+}

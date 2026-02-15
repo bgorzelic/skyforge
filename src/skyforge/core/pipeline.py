@@ -141,9 +141,9 @@ def run_pipeline(
         device_norm.mkdir(parents=True, exist_ok=True)
         device_proxy.mkdir(parents=True, exist_ok=True)
 
-        # Collect media files
+        # Collect media files (recursive — handles nested DCIM/ structures)
         files = sorted([
-            f for f in device_dir.iterdir()
+            f for f in device_dir.rglob("*")
             if f.is_file() and f.suffix.lower() in (VIDEO_EXTENSIONS | IMAGE_EXTENSIONS)
         ])
 
@@ -159,16 +159,15 @@ def run_pipeline(
 
             results.append(result)
 
-        # Copy telemetry/SRT files
-        for srt in device_dir.glob("*.SRT"):
+        # Copy telemetry/SRT files (recursive)
+        import shutil
+        for srt in device_dir.rglob("*.SRT"):
             dest = device_norm / srt.name
             if not dest.exists():
-                import shutil
                 shutil.copy2(srt, dest)
-        for srt in device_dir.glob("*.srt"):
+        for srt in device_dir.rglob("*.srt"):
             dest = device_norm / srt.name
             if not dest.exists():
-                import shutil
                 shutil.copy2(srt, dest)
 
     return results
@@ -237,13 +236,16 @@ def _run_normalize(source: Path, output: Path, info: MediaInfo, config: Pipeline
 
 def _run_proxy(source: Path, output: Path, config: PipelineConfig) -> None:
     """Run FFmpeg to generate a lightweight proxy."""
+    info = probe_file(source)
     cmd = [
         "ffmpeg", "-hide_banner", "-y", "-i", str(source),
         "-vf", f"scale={config.proxy_scale}",
         "-c:v", "libx264", "-pix_fmt", "yuv420p",
         "-preset", "veryfast", "-crf", str(config.proxy_crf),
-        "-c:a", "aac", "-b:a", config.proxy_audio_bitrate,
-        "-movflags", "+faststart",
-        str(output),
     ]
+    if info.has_audio:
+        cmd.extend(["-c:a", "aac", "-b:a", config.proxy_audio_bitrate])
+    else:
+        cmd.extend(["-an"])
+    cmd.extend(["-movflags", "+faststart", str(output)])
     subprocess.run(cmd, check=True, capture_output=True, text=True)

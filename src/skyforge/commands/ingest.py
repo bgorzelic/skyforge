@@ -28,7 +28,11 @@ def scan(
         console.print(f"[red]Error:[/red] Directory '{source}' not found.")
         raise typer.Exit(1)
 
-    files = scan_directory(source, recursive)
+    # If this is a project dir, scan only 01_RAW to avoid duplicates
+    from skyforge.core.project import detect_project_dir
+    proj = detect_project_dir(source)
+    scan_root = (proj / "01_RAW") if proj and (proj / "01_RAW").exists() else source
+    files = scan_directory(scan_root, recursive)
 
     if not files:
         console.print("[yellow]No media files found.[/yellow]")
@@ -145,10 +149,10 @@ def run(
         TimeElapsedColumn(),
         console=console,
     ) as progress:
-        # Count total files first
+        # Count total files first (recursive within device dirs)
         total = sum(
             1 for d in raw_dir.iterdir() if d.is_dir()
-            for f in d.iterdir()
+            for f in d.rglob("*")
             if f.is_file() and f.suffix.lower() in (VIDEO_EXTENSIONS | IMAGE_EXTENSIONS)
         )
         task = progress.add_task("Processing...", total=total)

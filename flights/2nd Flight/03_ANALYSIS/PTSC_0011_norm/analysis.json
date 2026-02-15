@@ -1,0 +1,1583 @@
+{
+  "source_file": "/Users/bgorzelic/dev/projects/aiaerialsolutions.com/Horizon by Yosemite/flights/2nd Flight/02_NORMALIZED/Drone/PTSC_0011_norm.mp4",
+  "duration": 153.266667,
+  "width": 3840,
+  "height": 2160,
+  "fps": 30.0,
+  "has_audio": false,
+  "codec": "h264",
+  "scene_changes": [
+    {
+      "timestamp": 0.0,
+      "score": 1.0
+    },
+    {
+      "timestamp": 6.533333333333333,
+      "score": 1.0
+    },
+    {
+      "timestamp": 138.33333333333334,
+      "score": 1.0
+    },
+    {
+      "timestamp": 147.5,
+      "score": 1.0
+    },
+    {
+      "timestamp": 148.5,
+      "score": 1.0
+    },
+    {
+      "timestamp": 149.1,
+      "score": 1.0
+    }
+  ],
+  "frame_analyses": [
+    {
+      "timestamp": 0.0,
+      "blur_score": 466.07,
+      "brightness": 121.03,
+      "contrast": 79.06,
+      "motion_score": 0.0,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 1.0,
+      "blur_score": 471.24,
+      "brightness": 120.49,
+      "contrast": 79.05,
+      "motion_score": 16.32,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 2.0,
+      "blur_score": 313.36,
+      "brightness": 120.7,
+      "contrast": 78.25,
+      "motion_score": 16.57,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 3.0,
+      "blur_score": 135.97,
+      "brightness": 112.99,
+      "contrast": 76.49,
+      "motion_score": 35.9,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 4.0,
+      "blur_score": 299.66,
+      "brightness": 120.87,
+      "contrast": 78.74,
+      "motion_score": 32.8,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 5.0,
+      "blur_score": 119.34,
+      "brightness": 124.69,
+      "contrast": 72.33,
+      "motion_score": 33.16,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 6.0,
+      "blur_score": 144.28,
+      "brightness": 131.05,
+      "contrast": 70.29,
+      "motion_score": 33.68,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 7.0,
+      "blur_score": 315.17,
+      "brightness": 128.75,
+      "contrast": 73.99,
+      "motion_score": 29.69,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 8.0,
+      "blur_score": 464.34,
+      "brightness": 127.98,
+      "contrast": 74.49,
+      "motion_score": 14.49,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 9.0,
+      "blur_score": 377.28,
+      "brightness": 128.58,
+      "contrast": 74.7,
+      "motion_score": 18.75,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 10.0,
+      "blur_score": 412.53,
+      "brightness": 127.81,
+      "contrast": 74.01,
+      "motion_score": 21.08,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 11.0,
+      "blur_score": 291.38,
+      "brightness": 128.86,
+      "contrast": 73.83,
+      "motion_score": 27.8,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 12.0,
+      "blur_score": 263.13,
+      "brightness": 126.35,
+      "contrast": 74.1,
+      "motion_score": 26.38,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 13.0,
+      "blur_score": 255.05,
+      "brightness": 122.42,
+      "contrast": 74.09,
+      "motion_score": 24.2,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 14.0,
+      "blur_score": 297.76,
+      "brightness": 120.95,
+      "contrast": 74.23,
+      "motion_score": 21.39,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 15.0,
+      "blur_score": 237.19,
+      "brightness": 122.03,
+      "contrast": 74.83,
+      "motion_score": 18.1,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 16.0,
+      "blur_score": 286.2,
+      "brightness": 121.9,
+      "contrast": 74.97,
+      "motion_score": 15.61,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 17.0,
+      "blur_score": 317.66,
+      "brightness": 122.1,
+      "contrast": 75.03,
+      "motion_score": 13.52,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 18.0,
+      "blur_score": 349.62,
+      "brightness": 121.92,
+      "contrast": 75.13,
+      "motion_score": 12.54,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 19.0,
+      "blur_score": 311.63,
+      "brightness": 122.15,
+      "contrast": 74.99,
+      "motion_score": 12.79,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 20.0,
+      "blur_score": 353.24,
+      "brightness": 121.99,
+      "contrast": 75.12,
+      "motion_score": 11.85,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 21.0,
+      "blur_score": 296.87,
+      "brightness": 122.34,
+      "contrast": 75.03,
+      "motion_score": 11.32,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 22.0,
+      "blur_score": 348.01,
+      "brightness": 122.36,
+      "contrast": 75.27,
+      "motion_score": 12.85,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 23.0,
+      "blur_score": 258.06,
+      "brightness": 122.99,
+      "contrast": 74.94,
+      "motion_score": 16.93,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 24.0,
+      "blur_score": 268.46,
+      "brightness": 123.25,
+      "contrast": 74.81,
+      "motion_score": 17.23,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 25.0,
+      "blur_score": 116.83,
+      "brightness": 109.81,
+      "contrast": 73.43,
+      "motion_score": 30.79,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 26.0,
+      "blur_score": 94.15,
+      "brightness": 120.69,
+      "contrast": 78.14,
+      "motion_score": 31.98,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 27.0,
+      "blur_score": 239.76,
+      "brightness": 122.83,
+      "contrast": 73.07,
+      "motion_score": 28.31,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 28.0,
+      "blur_score": 217.22,
+      "brightness": 125.57,
+      "contrast": 69.07,
+      "motion_score": 29.28,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 29.0,
+      "blur_score": 183.09,
+      "brightness": 117.8,
+      "contrast": 64.35,
+      "motion_score": 26.55,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 30.0,
+      "blur_score": 396.64,
+      "brightness": 125.3,
+      "contrast": 70.6,
+      "motion_score": 28.26,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 31.0,
+      "blur_score": 155.97,
+      "brightness": 101.7,
+      "contrast": 43.38,
+      "motion_score": 58.78,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 32.0,
+      "blur_score": 88.63,
+      "brightness": 134.81,
+      "contrast": 44.48,
+      "motion_score": 50.86,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 33.0,
+      "blur_score": 571.66,
+      "brightness": 129.15,
+      "contrast": 47.77,
+      "motion_score": 35.95,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 34.0,
+      "blur_score": 585.84,
+      "brightness": 128.94,
+      "contrast": 47.64,
+      "motion_score": 22.25,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 35.0,
+      "blur_score": 381.06,
+      "brightness": 126.85,
+      "contrast": 45.16,
+      "motion_score": 40.37,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 36.0,
+      "blur_score": 182.7,
+      "brightness": 124.09,
+      "contrast": 46.0,
+      "motion_score": 41.58,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 37.0,
+      "blur_score": 389.94,
+      "brightness": 121.04,
+      "contrast": 48.21,
+      "motion_score": 30.46,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 38.0,
+      "blur_score": 284.35,
+      "brightness": 124.1,
+      "contrast": 46.73,
+      "motion_score": 40.01,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 39.0,
+      "blur_score": 224.44,
+      "brightness": 113.22,
+      "contrast": 45.28,
+      "motion_score": 37.67,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 40.0,
+      "blur_score": 192.85,
+      "brightness": 124.58,
+      "contrast": 42.04,
+      "motion_score": 45.12,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 41.0,
+      "blur_score": 291.66,
+      "brightness": 120.82,
+      "contrast": 48.69,
+      "motion_score": 43.69,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 42.0,
+      "blur_score": 354.65,
+      "brightness": 123.07,
+      "contrast": 49.25,
+      "motion_score": 41.6,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 43.0,
+      "blur_score": 346.07,
+      "brightness": 122.48,
+      "contrast": 50.54,
+      "motion_score": 44.3,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 44.0,
+      "blur_score": 366.37,
+      "brightness": 124.62,
+      "contrast": 51.08,
+      "motion_score": 45.3,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 45.0,
+      "blur_score": 324.46,
+      "brightness": 125.43,
+      "contrast": 50.59,
+      "motion_score": 44.57,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 46.0,
+      "blur_score": 352.81,
+      "brightness": 128.44,
+      "contrast": 51.29,
+      "motion_score": 43.62,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 47.0,
+      "blur_score": 309.83,
+      "brightness": 131.84,
+      "contrast": 52.28,
+      "motion_score": 42.43,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 48.0,
+      "blur_score": 349.74,
+      "brightness": 131.06,
+      "contrast": 52.06,
+      "motion_score": 41.62,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 49.0,
+      "blur_score": 360.06,
+      "brightness": 129.91,
+      "contrast": 51.47,
+      "motion_score": 39.35,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 50.0,
+      "blur_score": 407.43,
+      "brightness": 125.85,
+      "contrast": 52.34,
+      "motion_score": 40.02,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 51.0,
+      "blur_score": 464.5,
+      "brightness": 120.59,
+      "contrast": 52.97,
+      "motion_score": 40.49,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 52.0,
+      "blur_score": 461.08,
+      "brightness": 111.33,
+      "contrast": 54.99,
+      "motion_score": 44.05,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 53.0,
+      "blur_score": 529.32,
+      "brightness": 111.15,
+      "contrast": 56.05,
+      "motion_score": 38.95,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 54.0,
+      "blur_score": 644.34,
+      "brightness": 110.69,
+      "contrast": 57.06,
+      "motion_score": 27.41,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 55.0,
+      "blur_score": 545.96,
+      "brightness": 110.74,
+      "contrast": 57.29,
+      "motion_score": 20.84,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 56.0,
+      "blur_score": 492.93,
+      "brightness": 111.45,
+      "contrast": 53.86,
+      "motion_score": 52.18,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 57.0,
+      "blur_score": 574.08,
+      "brightness": 111.19,
+      "contrast": 55.37,
+      "motion_score": 35.45,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 58.0,
+      "blur_score": 670.35,
+      "brightness": 108.36,
+      "contrast": 55.97,
+      "motion_score": 26.8,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 59.0,
+      "blur_score": 557.16,
+      "brightness": 103.14,
+      "contrast": 56.1,
+      "motion_score": 39.8,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 60.0,
+      "blur_score": 540.2,
+      "brightness": 102.46,
+      "contrast": 55.16,
+      "motion_score": 37.12,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 61.0,
+      "blur_score": 506.08,
+      "brightness": 101.44,
+      "contrast": 52.98,
+      "motion_score": 41.22,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 62.0,
+      "blur_score": 571.03,
+      "brightness": 98.67,
+      "contrast": 51.59,
+      "motion_score": 29.52,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 63.0,
+      "blur_score": 577.0,
+      "brightness": 100.15,
+      "contrast": 51.87,
+      "motion_score": 22.35,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 64.0,
+      "blur_score": 655.78,
+      "brightness": 100.45,
+      "contrast": 52.69,
+      "motion_score": 28.5,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 65.0,
+      "blur_score": 488.29,
+      "brightness": 100.08,
+      "contrast": 50.38,
+      "motion_score": 34.83,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 66.0,
+      "blur_score": 738.55,
+      "brightness": 101.66,
+      "contrast": 50.91,
+      "motion_score": 20.9,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 67.0,
+      "blur_score": 678.6,
+      "brightness": 101.6,
+      "contrast": 50.95,
+      "motion_score": 13.83,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 68.0,
+      "blur_score": 338.42,
+      "brightness": 104.35,
+      "contrast": 53.84,
+      "motion_score": 35.46,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 69.0,
+      "blur_score": 233.52,
+      "brightness": 106.7,
+      "contrast": 51.91,
+      "motion_score": 49.56,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 70.0,
+      "blur_score": 342.76,
+      "brightness": 121.06,
+      "contrast": 50.84,
+      "motion_score": 55.97,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 71.0,
+      "blur_score": 311.83,
+      "brightness": 125.13,
+      "contrast": 51.51,
+      "motion_score": 45.73,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 72.0,
+      "blur_score": 519.73,
+      "brightness": 119.12,
+      "contrast": 52.6,
+      "motion_score": 55.48,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 73.0,
+      "blur_score": 272.91,
+      "brightness": 124.91,
+      "contrast": 48.96,
+      "motion_score": 54.8,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 74.0,
+      "blur_score": 343.42,
+      "brightness": 129.12,
+      "contrast": 42.64,
+      "motion_score": 47.18,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 75.0,
+      "blur_score": 409.49,
+      "brightness": 130.21,
+      "contrast": 38.75,
+      "motion_score": 40.43,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 76.0,
+      "blur_score": 426.79,
+      "brightness": 133.41,
+      "contrast": 38.24,
+      "motion_score": 35.6,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 77.0,
+      "blur_score": 848.4,
+      "brightness": 137.02,
+      "contrast": 36.98,
+      "motion_score": 33.2,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 78.0,
+      "blur_score": 976.44,
+      "brightness": 139.21,
+      "contrast": 37.57,
+      "motion_score": 26.46,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 79.0,
+      "blur_score": 817.37,
+      "brightness": 136.94,
+      "contrast": 37.78,
+      "motion_score": 29.41,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 80.0,
+      "blur_score": 841.88,
+      "brightness": 137.58,
+      "contrast": 39.03,
+      "motion_score": 28.97,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 81.0,
+      "blur_score": 424.59,
+      "brightness": 142.26,
+      "contrast": 38.3,
+      "motion_score": 29.78,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 82.0,
+      "blur_score": 339.77,
+      "brightness": 140.19,
+      "contrast": 37.81,
+      "motion_score": 32.65,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 83.0,
+      "blur_score": 287.63,
+      "brightness": 136.76,
+      "contrast": 40.06,
+      "motion_score": 37.93,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 84.0,
+      "blur_score": 223.83,
+      "brightness": 138.71,
+      "contrast": 41.61,
+      "motion_score": 42.65,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 85.0,
+      "blur_score": 224.31,
+      "brightness": 134.95,
+      "contrast": 42.38,
+      "motion_score": 44.62,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 86.0,
+      "blur_score": 322.01,
+      "brightness": 130.8,
+      "contrast": 46.89,
+      "motion_score": 46.8,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 87.0,
+      "blur_score": 358.23,
+      "brightness": 125.54,
+      "contrast": 46.58,
+      "motion_score": 47.04,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 88.0,
+      "blur_score": 147.22,
+      "brightness": 138.91,
+      "contrast": 33.26,
+      "motion_score": 43.41,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 89.0,
+      "blur_score": 211.99,
+      "brightness": 142.97,
+      "contrast": 41.94,
+      "motion_score": 40.74,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 90.0,
+      "blur_score": 585.97,
+      "brightness": 122.07,
+      "contrast": 45.59,
+      "motion_score": 51.66,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 91.0,
+      "blur_score": 627.88,
+      "brightness": 121.2,
+      "contrast": 45.45,
+      "motion_score": 38.5,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 92.0,
+      "blur_score": 609.25,
+      "brightness": 124.72,
+      "contrast": 48.93,
+      "motion_score": 38.86,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 93.0,
+      "blur_score": 189.19,
+      "brightness": 140.99,
+      "contrast": 52.02,
+      "motion_score": 50.41,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 94.0,
+      "blur_score": 184.64,
+      "brightness": 147.23,
+      "contrast": 52.44,
+      "motion_score": 44.44,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 95.0,
+      "blur_score": 168.68,
+      "brightness": 144.85,
+      "contrast": 53.1,
+      "motion_score": 52.37,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 96.0,
+      "blur_score": 252.81,
+      "brightness": 144.05,
+      "contrast": 55.4,
+      "motion_score": 31.71,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 97.0,
+      "blur_score": 174.83,
+      "brightness": 141.38,
+      "contrast": 57.82,
+      "motion_score": 48.88,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 98.0,
+      "blur_score": 181.06,
+      "brightness": 135.89,
+      "contrast": 61.52,
+      "motion_score": 48.46,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 99.0,
+      "blur_score": 162.16,
+      "brightness": 144.88,
+      "contrast": 54.35,
+      "motion_score": 56.57,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 100.0,
+      "blur_score": 150.87,
+      "brightness": 144.25,
+      "contrast": 49.85,
+      "motion_score": 47.29,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 101.0,
+      "blur_score": 186.99,
+      "brightness": 142.94,
+      "contrast": 51.16,
+      "motion_score": 38.46,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 102.0,
+      "blur_score": 258.44,
+      "brightness": 143.39,
+      "contrast": 52.47,
+      "motion_score": 36.57,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 103.0,
+      "blur_score": 226.23,
+      "brightness": 143.75,
+      "contrast": 52.08,
+      "motion_score": 42.13,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 104.0,
+      "blur_score": 210.28,
+      "brightness": 145.26,
+      "contrast": 52.35,
+      "motion_score": 41.64,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 105.0,
+      "blur_score": 177.46,
+      "brightness": 145.33,
+      "contrast": 54.36,
+      "motion_score": 41.93,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 106.0,
+      "blur_score": 212.82,
+      "brightness": 144.75,
+      "contrast": 55.73,
+      "motion_score": 33.01,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 107.0,
+      "blur_score": 197.79,
+      "brightness": 144.65,
+      "contrast": 56.65,
+      "motion_score": 27.88,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 108.0,
+      "blur_score": 216.84,
+      "brightness": 144.35,
+      "contrast": 56.63,
+      "motion_score": 26.0,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 109.0,
+      "blur_score": 173.14,
+      "brightness": 144.66,
+      "contrast": 56.4,
+      "motion_score": 24.61,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 110.0,
+      "blur_score": 222.32,
+      "brightness": 144.26,
+      "contrast": 56.01,
+      "motion_score": 27.77,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 111.0,
+      "blur_score": 200.92,
+      "brightness": 144.51,
+      "contrast": 55.9,
+      "motion_score": 26.84,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 112.0,
+      "blur_score": 223.72,
+      "brightness": 144.47,
+      "contrast": 56.78,
+      "motion_score": 29.37,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 113.0,
+      "blur_score": 193.84,
+      "brightness": 144.49,
+      "contrast": 56.59,
+      "motion_score": 15.96,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 114.0,
+      "blur_score": 223.01,
+      "brightness": 144.22,
+      "contrast": 56.79,
+      "motion_score": 24.92,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 115.0,
+      "blur_score": 166.56,
+      "brightness": 144.51,
+      "contrast": 56.0,
+      "motion_score": 27.57,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 116.0,
+      "blur_score": 225.89,
+      "brightness": 144.13,
+      "contrast": 56.78,
+      "motion_score": 24.72,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 117.0,
+      "blur_score": 173.42,
+      "brightness": 144.88,
+      "contrast": 55.74,
+      "motion_score": 28.97,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 118.0,
+      "blur_score": 176.8,
+      "brightness": 144.93,
+      "contrast": 57.08,
+      "motion_score": 35.05,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 119.0,
+      "blur_score": 137.89,
+      "brightness": 147.8,
+      "contrast": 58.34,
+      "motion_score": 35.62,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 120.0,
+      "blur_score": 132.68,
+      "brightness": 150.46,
+      "contrast": 59.93,
+      "motion_score": 36.33,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 121.0,
+      "blur_score": 104.59,
+      "brightness": 149.91,
+      "contrast": 61.0,
+      "motion_score": 38.05,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 122.0,
+      "blur_score": 100.69,
+      "brightness": 150.33,
+      "contrast": 61.8,
+      "motion_score": 38.36,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 123.0,
+      "blur_score": 82.38,
+      "brightness": 149.9,
+      "contrast": 62.2,
+      "motion_score": 37.57,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 124.0,
+      "blur_score": 84.8,
+      "brightness": 149.01,
+      "contrast": 63.2,
+      "motion_score": 37.62,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 125.0,
+      "blur_score": 71.29,
+      "brightness": 146.5,
+      "contrast": 64.08,
+      "motion_score": 37.23,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": true
+    },
+    {
+      "timestamp": 126.0,
+      "blur_score": 75.03,
+      "brightness": 142.67,
+      "contrast": 65.66,
+      "motion_score": 35.96,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": true
+    },
+    {
+      "timestamp": 127.0,
+      "blur_score": 63.63,
+      "brightness": 139.12,
+      "contrast": 69.08,
+      "motion_score": 34.36,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": true
+    },
+    {
+      "timestamp": 128.0,
+      "blur_score": 69.08,
+      "brightness": 131.34,
+      "contrast": 71.92,
+      "motion_score": 37.33,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": true
+    },
+    {
+      "timestamp": 129.0,
+      "blur_score": 68.97,
+      "brightness": 119.55,
+      "contrast": 73.55,
+      "motion_score": 35.57,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": true
+    },
+    {
+      "timestamp": 130.0,
+      "blur_score": 107.03,
+      "brightness": 109.17,
+      "contrast": 72.63,
+      "motion_score": 37.52,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 131.0,
+      "blur_score": 154.99,
+      "brightness": 89.6,
+      "contrast": 63.37,
+      "motion_score": 40.84,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 132.0,
+      "blur_score": 323.19,
+      "brightness": 85.72,
+      "contrast": 48.44,
+      "motion_score": 38.97,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 133.0,
+      "blur_score": 358.2,
+      "brightness": 91.89,
+      "contrast": 33.84,
+      "motion_score": 37.6,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 134.0,
+      "blur_score": 290.8,
+      "brightness": 110.82,
+      "contrast": 28.36,
+      "motion_score": 37.7,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 135.0,
+      "blur_score": 162.89,
+      "brightness": 139.76,
+      "contrast": 26.84,
+      "motion_score": 39.23,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": false
+    },
+    {
+      "timestamp": 136.0,
+      "blur_score": 57.63,
+      "brightness": 145.47,
+      "contrast": 28.17,
+      "motion_score": 30.88,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": true
+    },
+    {
+      "timestamp": 137.0,
+      "blur_score": 5.29,
+      "brightness": 147.5,
+      "contrast": 18.45,
+      "motion_score": 26.76,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": true
+    },
+    {
+      "timestamp": 138.0,
+      "blur_score": 7.6,
+      "brightness": 181.33,
+      "contrast": 18.43,
+      "motion_score": 36.15,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": true
+    },
+    {
+      "timestamp": 139.0,
+      "blur_score": 44.25,
+      "brightness": 121.59,
+      "contrast": 64.68,
+      "motion_score": 67.01,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": true
+    },
+    {
+      "timestamp": 140.0,
+      "blur_score": 31.87,
+      "brightness": 121.08,
+      "contrast": 61.31,
+      "motion_score": 21.35,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": true
+    },
+    {
+      "timestamp": 141.0,
+      "blur_score": 29.76,
+      "brightness": 118.09,
+      "contrast": 60.15,
+      "motion_score": 19.82,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": true
+    },
+    {
+      "timestamp": 142.0,
+      "blur_score": 37.03,
+      "brightness": 117.29,
+      "contrast": 60.06,
+      "motion_score": 8.38,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": true
+    },
+    {
+      "timestamp": 143.0,
+      "blur_score": 33.0,
+      "brightness": 120.07,
+      "contrast": 60.89,
+      "motion_score": 9.28,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": true
+    },
+    {
+      "timestamp": 144.0,
+      "blur_score": 36.99,
+      "brightness": 119.7,
+      "contrast": 60.75,
+      "motion_score": 7.18,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": true
+    },
+    {
+      "timestamp": 145.0,
+      "blur_score": 33.61,
+      "brightness": 118.48,
+      "contrast": 60.7,
+      "motion_score": 5.46,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": true
+    },
+    {
+      "timestamp": 146.0,
+      "blur_score": 34.68,
+      "brightness": 116.96,
+      "contrast": 61.24,
+      "motion_score": 12.57,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": true
+    },
+    {
+      "timestamp": 147.0,
+      "blur_score": 26.7,
+      "brightness": 112.07,
+      "contrast": 62.72,
+      "motion_score": 23.78,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": true
+    },
+    {
+      "timestamp": 148.0,
+      "blur_score": 10.56,
+      "brightness": 64.27,
+      "contrast": 68.59,
+      "motion_score": 76.23,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": true
+    },
+    {
+      "timestamp": 149.0,
+      "blur_score": 6.7,
+      "brightness": 7.04,
+      "contrast": 8.2,
+      "motion_score": 57.93,
+      "is_dark": true,
+      "is_overexposed": false,
+      "is_blurry": true
+    },
+    {
+      "timestamp": 150.0,
+      "blur_score": 2.61,
+      "brightness": 144.27,
+      "contrast": 28.56,
+      "motion_score": 137.24,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": true
+    },
+    {
+      "timestamp": 151.0,
+      "blur_score": 2.25,
+      "brightness": 142.43,
+      "contrast": 28.57,
+      "motion_score": 31.33,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": true
+    },
+    {
+      "timestamp": 152.0,
+      "blur_score": 3.2,
+      "brightness": 133.7,
+      "contrast": 18.68,
+      "motion_score": 21.48,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": true
+    },
+    {
+      "timestamp": 153.0,
+      "blur_score": 2.28,
+      "brightness": 134.93,
+      "contrast": 17.48,
+      "motion_score": 23.94,
+      "is_dark": false,
+      "is_overexposed": false,
+      "is_blurry": true
+    }
+  ],
+  "audio_peaks": [],
+  "avg_blur": 286.28,
+  "avg_brightness": 126.38,
+  "avg_motion": 34.24,
+  "dark_ratio": 0.006,
+  "blurry_ratio": 0.149
+}

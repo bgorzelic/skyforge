@@ -1,0 +1,36 @@
+[
+  {
+    "index": 1,
+    "timestamp_start": "00:00:00,000",
+    "timestamp_end": "00:00:00,533",
+    "seconds": 0.0,
+    "f_stop": 1.8,
+    "shutter_speed": "1/30",
+    "iso": 126,
+    "ev": 0.0,
+    "height_m": 0.0,
+    "distance_m": 0.0,
+    "horizontal_speed_ms": 0.0,
+    "descent_speed_ms": 0.0,
+    "longitude": -119.936447,
+    "latitude": 37.568661,
+    "zoom": 1.0
+  },
+  {
+    "index": 2,
+    "timestamp_start": "00:00:00,533",
+    "timestamp_end": "00:00:01,066",
+    "seconds": 0.533,
+    "f_stop": 1.8,
+    "shutter_speed": "1/30",
+    "iso": 126,
+    "ev": 0.0,
+    "height_m": 0.0,
+    "distance_m": 0.0,
+    "horizontal_speed_ms": 0.0,
+    "descent_speed_ms": 0.0,
+    "longitude": -119.936432,
+    "latitude": 37.568661,
+    "zoom": 1.0
+  }
+]

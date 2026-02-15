@@ -1,0 +1,184 @@
+{
+  "source_file": "/Users/bgorzelic/dev/projects/aiaerialsolutions.com/Horizon by Yosemite/flights/2nd Flight/02_NORMALIZED/Drone/PTSC_0018_norm.mp4",
+  "total_duration": 218.733333,
+  "segments": [
+    {
+      "source_file": "/Users/bgorzelic/dev/projects/aiaerialsolutions.com/Horizon by Yosemite/flights/2nd Flight/02_NORMALIZED/Drone/PTSC_0018_norm.mp4",
+      "segment_id": 1,
+      "start_time": 0.0,
+      "end_time": 25.0,
+      "duration": 25.0,
+      "confidence": 0.912,
+      "reason_tags": [
+        "fast_motion",
+        "clear",
+        "good_exposure",
+        "4k",
+        "no_audio"
+      ],
+      "notes": "High quality segment. \u2014 action/movement. (no audio)",
+      "avg_blur": 110.17,
+      "avg_brightness": 108.14,
+      "avg_motion": 18.39,
+      "has_audio": false
+    },
+    {
+      "source_file": "/Users/bgorzelic/dev/projects/aiaerialsolutions.com/Horizon by Yosemite/flights/2nd Flight/02_NORMALIZED/Drone/PTSC_0018_norm.mp4",
+      "segment_id": 2,
+      "start_time": 25.0,
+      "end_time": 50.0,
+      "duration": 25.0,
+      "confidence": 0.888,
+      "reason_tags": [
+        "fast_motion",
+        "good_exposure",
+        "4k",
+        "no_audio"
+      ],
+      "notes": "High quality segment. \u2014 action/movement. (no audio)",
+      "avg_blur": 95.77,
+      "avg_brightness": 111.81,
+      "avg_motion": 24.26,
+      "has_audio": false
+    },
+    {
+      "source_file": "/Users/bgorzelic/dev/projects/aiaerialsolutions.com/Horizon by Yosemite/flights/2nd Flight/02_NORMALIZED/Drone/PTSC_0018_norm.mp4",
+      "segment_id": 3,
+      "start_time": 50.0,
+      "end_time": 75.0,
+      "duration": 25.0,
+      "confidence": 0.836,
+      "reason_tags": [
+        "fast_motion",
+        "good_exposure",
+        "4k",
+        "no_audio"
+      ],
+      "notes": "High quality segment. \u2014 action/movement. (no audio)",
+      "avg_blur": 93.59,
+      "avg_brightness": 116.9,
+      "avg_motion": 25.23,
+      "has_audio": false
+    },
+    {
+      "source_file": "/Users/bgorzelic/dev/projects/aiaerialsolutions.com/Horizon by Yosemite/flights/2nd Flight/02_NORMALIZED/Drone/PTSC_0018_norm.mp4",
+      "segment_id": 4,
+      "start_time": 75.0,
+      "end_time": 100.0,
+      "duration": 25.0,
+      "confidence": 0.804,
+      "reason_tags": [
+        "fast_motion",
+        "very_sharp",
+        "good_exposure",
+        "4k",
+        "no_audio"
+      ],
+      "notes": "High quality segment. \u2014 action/movement. (no audio)",
+      "avg_blur": 228.21,
+      "avg_brightness": 114.02,
+      "avg_motion": 24.48,
+      "has_audio": false
+    },
+    {
+      "source_file": "/Users/bgorzelic/dev/projects/aiaerialsolutions.com/Horizon by Yosemite/flights/2nd Flight/02_NORMALIZED/Drone/PTSC_0018_norm.mp4",
+      "segment_id": 5,
+      "start_time": 100.0,
+      "end_time": 125.0,
+      "duration": 25.0,
+      "confidence": 0.88,
+      "reason_tags": [
+        "moderate_motion",
+        "good_exposure",
+        "4k",
+        "no_audio"
+      ],
+      "notes": "High quality segment. (no audio)",
+      "avg_blur": 82.59,
+      "avg_brightness": 107.75,
+      "avg_motion": 11.76,
+      "has_audio": false
+    },
+    {
+      "source_file": "/Users/bgorzelic/dev/projects/aiaerialsolutions.com/Horizon by Yosemite/flights/2nd Flight/02_NORMALIZED/Drone/PTSC_0018_norm.mp4",
+      "segment_id": 6,
+      "start_time": 125.0,
+      "end_time": 146.0,
+      "duration": 21.0,
+      "confidence": 0.971,
+      "reason_tags": [
+        "moderate_motion",
+        "good_exposure",
+        "4k",
+        "no_audio"
+      ],
+      "notes": "High quality segment. (no audio)",
+      "avg_blur": 90.28,
+      "avg_brightness": 111.48,
+      "avg_motion": 7.35,
+      "has_audio": false
+    },
+    {
+      "source_file": "/Users/bgorzelic/dev/projects/aiaerialsolutions.com/Horizon by Yosemite/flights/2nd Flight/02_NORMALIZED/Drone/PTSC_0018_norm.mp4",
+      "segment_id": 7,
+      "start_time": 147.0,
+      "end_time": 172.0,
+      "duration": 25.0,
+      "confidence": 0.852,
+      "reason_tags": [
+        "fast_motion",
+        "clear",
+        "good_exposure",
+        "4k",
+        "no_audio"
+      ],
+      "notes": "High quality segment. \u2014 action/movement. (no audio)",
+      "avg_blur": 121.42,
+      "avg_brightness": 111.98,
+      "avg_motion": 27.98,
+      "has_audio": false
+    },
+    {
+      "source_file": "/Users/bgorzelic/dev/projects/aiaerialsolutions.com/Horizon by Yosemite/flights/2nd Flight/02_NORMALIZED/Drone/PTSC_0018_norm.mp4",
+      "segment_id": 8,
+      "start_time": 172.0,
+      "end_time": 197.0,
+      "duration": 25.0,
+      "confidence": 0.96,
+      "reason_tags": [
+        "fast_motion",
+        "clear",
+        "good_exposure",
+        "4k",
+        "no_audio"
+      ],
+      "notes": "High quality segment. \u2014 action/movement. (no audio)",
+      "avg_blur": 165.58,
+      "avg_brightness": 119.04,
+      "avg_motion": 21.85,
+      "has_audio": false
+    },
+    {
+      "source_file": "/Users/bgorzelic/dev/projects/aiaerialsolutions.com/Horizon by Yosemite/flights/2nd Flight/02_NORMALIZED/Drone/PTSC_0018_norm.mp4",
+      "segment_id": 9,
+      "start_time": 197.0,
+      "end_time": 218.73,
+      "duration": 21.73,
+      "confidence": 0.923,
+      "reason_tags": [
+        "fast_motion",
+        "clear",
+        "good_exposure",
+        "4k",
+        "no_audio"
+      ],
+      "notes": "High quality segment. \u2014 action/movement. (no audio)",
+      "avg_blur": 174.16,
+      "avg_brightness": 123.05,
+      "avg_motion": 28.17,
+      "has_audio": false
+    }
+  ],
+  "rejected_duration": 1.0,
+  "selected_duration": 217.73
+}

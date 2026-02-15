@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+  <Document>
+    <name>PTSC_0019</name>
+    <Style id="flightPath">
+      <LineStyle>
+        <color>ff0000ff</color>
+        <width>3</width>
+      </LineStyle>
+    </Style>
+    <Placemark>
+      <name>PTSC_0019</name>
+      <styleUrl>#flightPath</styleUrl>
+      <LineString>
+        <altitudeMode>relativeToGround</altitudeMode>
+        <coordinates>
+        -119.936447,37.568661,0
+        -119.936432,37.568661,0
+        </coordinates>
+      </LineString>
+    </Placemark>
+    <Placemark>
+      <name>Takeoff</name>
+      <Point>
+        <coordinates>-119.936447,37.568661,0</coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>Landing</name>
+      <Point>
+        <coordinates>-119.936432,37.568661,0</coordinates>
+      </Point>
+    </Placemark>
+  </Document>
+</kml>

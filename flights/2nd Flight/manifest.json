@@ -1,0 +1,62 @@
+[
+  {
+    "device": "Drone",
+    "original": "/Users/bgorzelic/dev/projects/aiaerialsolutions.com/Horizon by Yosemite/flights/2nd Flight/01_RAW/Drone/PTSC_0010_0001.MP4",
+    "normalized": "/Users/bgorzelic/dev/projects/aiaerialsolutions.com/Horizon by Yosemite/flights/2nd Flight/02_NORMALIZED/Drone/PTSC_0010_0001_norm.mp4",
+    "proxy": "/Users/bgorzelic/dev/projects/aiaerialsolutions.com/Horizon by Yosemite/flights/2nd Flight/02_PROXIES/Drone/PTSC_0010_0001_proxy.mp4",
+    "skipped": false,
+    "error": null,
+    "hdr_tonemapped": false,
+    "resolution": "3840x2160",
+    "fps": 30.0,
+    "duration_s": 386.9
+  },
+  {
+    "device": "Drone",
+    "original": "/Users/bgorzelic/dev/projects/aiaerialsolutions.com/Horizon by Yosemite/flights/2nd Flight/01_RAW/Drone/PTSC_0010_0002.MP4",
+    "normalized": "/Users/bgorzelic/dev/projects/aiaerialsolutions.com/Horizon by Yosemite/flights/2nd Flight/02_NORMALIZED/Drone/PTSC_0010_0002_norm.mp4",
+    "proxy": "/Users/bgorzelic/dev/projects/aiaerialsolutions.com/Horizon by Yosemite/flights/2nd Flight/02_PROXIES/Drone/PTSC_0010_0002_proxy.mp4",
+    "skipped": false,
+    "error": null,
+    "hdr_tonemapped": false,
+    "resolution": "3840x2160",
+    "fps": 30.0,
+    "duration_s": 220.0
+  },
+  {
+    "device": "Drone",
+    "original": "/Users/bgorzelic/dev/projects/aiaerialsolutions.com/Horizon by Yosemite/flights/2nd Flight/01_RAW/Drone/PTSC_0011.MP4",
+    "normalized": "/Users/bgorzelic/dev/projects/aiaerialsolutions.com/Horizon by Yosemite/flights/2nd Flight/02_NORMALIZED/Drone/PTSC_0011_norm.mp4",
+    "proxy": "/Users/bgorzelic/dev/projects/aiaerialsolutions.com/Horizon by Yosemite/flights/2nd Flight/02_PROXIES/Drone/PTSC_0011_proxy.mp4",
+    "skipped": false,
+    "error": null,
+    "hdr_tonemapped": false,
+    "resolution": "3840x2160",
+    "fps": 30.0,
+    "duration_s": 153.3
+  },
+  {
+    "device": "Drone",
+    "original": "/Users/bgorzelic/dev/projects/aiaerialsolutions.com/Horizon by Yosemite/flights/2nd Flight/01_RAW/Drone/PTSC_0018.MP4",
+    "normalized": "/Users/bgorzelic/dev/projects/aiaerialsolutions.com/Horizon by Yosemite/flights/2nd Flight/02_NORMALIZED/Drone/PTSC_0018_norm.mp4",
+    "proxy": "/Users/bgorzelic/dev/projects/aiaerialsolutions.com/Horizon by Yosemite/flights/2nd Flight/02_PROXIES/Drone/PTSC_0018_proxy.mp4",
+    "skipped": false,
+    "error": null,
+    "hdr_tonemapped": false,
+    "resolution": "3840x2160",
+    "fps": 30.0,
+    "duration_s": 218.7
+  },
+  {
+    "device": "Drone",
+    "original": "/Users/bgorzelic/dev/projects/aiaerialsolutions.com/Horizon by Yosemite/flights/2nd Flight/01_RAW/Drone/PTSC_0019.MP4",
+    "normalized": "/Users/bgorzelic/dev/projects/aiaerialsolutions.com/Horizon by Yosemite/flights/2nd Flight/02_NORMALIZED/Drone/PTSC_0019_norm.mp4",
+    "proxy": "/Users/bgorzelic/dev/projects/aiaerialsolutions.com/Horizon by Yosemite/flights/2nd Flight/02_PROXIES/Drone/PTSC_0019_proxy.mp4",
+    "skipped": false,
+    "error": null,
+    "hdr_tonemapped": false,
+    "resolution": "3840x2160",
+    "fps": 30.0,
+    "duration_s": 1.4
+  }
+]
