@@ -1,0 +1,46 @@
+{
+  "source_file": "/Users/bgorzelic/dev/projects/aiaerialsolutions.com/Horizon by Yosemite/flights/1st Flight/02_NORMALIZED/iPhone/IMG_0168_norm.mp4",
+  "total_duration": 37.866667,
+  "segments": [
+    {
+      "source_file": "/Users/bgorzelic/dev/projects/aiaerialsolutions.com/Horizon by Yosemite/flights/1st Flight/02_NORMALIZED/iPhone/IMG_0168_norm.mp4",
+      "segment_id": 1,
+      "start_time": 0.0,
+      "end_time": 14.0,
+      "duration": 14.0,
+      "confidence": 0.907,
+      "reason_tags": [
+        "fast_motion",
+        "very_sharp",
+        "good_exposure",
+        "portrait"
+      ],
+      "notes": "High quality segment. \u2014 action/movement",
+      "avg_blur": 476.33,
+      "avg_brightness": 147.12,
+      "avg_motion": 49.39,
+      "has_audio": true
+    },
+    {
+      "source_file": "/Users/bgorzelic/dev/projects/aiaerialsolutions.com/Horizon by Yosemite/flights/1st Flight/02_NORMALIZED/iPhone/IMG_0168_norm.mp4",
+      "segment_id": 2,
+      "start_time": 14.0,
+      "end_time": 37.87,
+      "duration": 23.87,
+      "confidence": 0.917,
+      "reason_tags": [
+        "fast_motion",
+        "very_sharp",
+        "good_exposure",
+        "portrait"
+      ],
+      "notes": "High quality segment. \u2014 action/movement",
+      "avg_blur": 242.67,
+      "avg_brightness": 148.44,
+      "avg_motion": 38.44,
+      "has_audio": true
+    }
+  ],
+  "rejected_duration": -0.0,
+  "selected_duration": 37.87
+}

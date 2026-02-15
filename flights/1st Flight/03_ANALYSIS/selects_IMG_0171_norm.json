@@ -1,0 +1,160 @@
+{
+  "source_file": "/Users/bgorzelic/dev/projects/aiaerialsolutions.com/Horizon by Yosemite/flights/1st Flight/02_NORMALIZED/Meta_Glasses/IMG_0171_norm.mp4",
+  "total_duration": 180.066667,
+  "segments": [
+    {
+      "source_file": "/Users/bgorzelic/dev/projects/aiaerialsolutions.com/Horizon by Yosemite/flights/1st Flight/02_NORMALIZED/Meta_Glasses/IMG_0171_norm.mp4",
+      "segment_id": 1,
+      "start_time": 0.0,
+      "end_time": 19.0,
+      "duration": 19.0,
+      "confidence": 0.905,
+      "reason_tags": [
+        "fast_motion",
+        "very_sharp",
+        "good_exposure",
+        "portrait"
+      ],
+      "notes": "High quality segment. \u2014 action/movement",
+      "avg_blur": 2218.09,
+      "avg_brightness": 128.42,
+      "avg_motion": 49.83,
+      "has_audio": true
+    },
+    {
+      "source_file": "/Users/bgorzelic/dev/projects/aiaerialsolutions.com/Horizon by Yosemite/flights/1st Flight/02_NORMALIZED/Meta_Glasses/IMG_0171_norm.mp4",
+      "segment_id": 2,
+      "start_time": 19.0,
+      "end_time": 44.0,
+      "duration": 25.0,
+      "confidence": 0.9,
+      "reason_tags": [
+        "fast_motion",
+        "very_sharp",
+        "good_exposure",
+        "portrait"
+      ],
+      "notes": "High quality segment. \u2014 action/movement",
+      "avg_blur": 2527.11,
+      "avg_brightness": 126.29,
+      "avg_motion": 56.31,
+      "has_audio": true
+    },
+    {
+      "source_file": "/Users/bgorzelic/dev/projects/aiaerialsolutions.com/Horizon by Yosemite/flights/1st Flight/02_NORMALIZED/Meta_Glasses/IMG_0171_norm.mp4",
+      "segment_id": 3,
+      "start_time": 47.0,
+      "end_time": 72.0,
+      "duration": 25.0,
+      "confidence": 0.88,
+      "reason_tags": [
+        "fast_motion",
+        "very_sharp",
+        "good_exposure",
+        "portrait"
+      ],
+      "notes": "High quality segment. \u2014 action/movement",
+      "avg_blur": 947.56,
+      "avg_brightness": 122.5,
+      "avg_motion": 57.91,
+      "has_audio": true
+    },
+    {
+      "source_file": "/Users/bgorzelic/dev/projects/aiaerialsolutions.com/Horizon by Yosemite/flights/1st Flight/02_NORMALIZED/Meta_Glasses/IMG_0171_norm.mp4",
+      "segment_id": 4,
+      "start_time": 72.0,
+      "end_time": 94.0,
+      "duration": 22.0,
+      "confidence": 0.745,
+      "reason_tags": [
+        "fast_motion",
+        "clear",
+        "good_exposure",
+        "portrait"
+      ],
+      "notes": "Usable segment. \u2014 action/movement",
+      "avg_blur": 162.54,
+      "avg_brightness": 124.02,
+      "avg_motion": 38.88,
+      "has_audio": true
+    },
+    {
+      "source_file": "/Users/bgorzelic/dev/projects/aiaerialsolutions.com/Horizon by Yosemite/flights/1st Flight/02_NORMALIZED/Meta_Glasses/IMG_0171_norm.mp4",
+      "segment_id": 5,
+      "start_time": 94.0,
+      "end_time": 119.0,
+      "duration": 25.0,
+      "confidence": 0.852,
+      "reason_tags": [
+        "fast_motion",
+        "very_sharp",
+        "good_exposure",
+        "portrait"
+      ],
+      "notes": "High quality segment. \u2014 action/movement",
+      "avg_blur": 410.87,
+      "avg_brightness": 133.36,
+      "avg_motion": 52.79,
+      "has_audio": true
+    },
+    {
+      "source_file": "/Users/bgorzelic/dev/projects/aiaerialsolutions.com/Horizon by Yosemite/flights/1st Flight/02_NORMALIZED/Meta_Glasses/IMG_0171_norm.mp4",
+      "segment_id": 6,
+      "start_time": 119.0,
+      "end_time": 131.0,
+      "duration": 12.0,
+      "confidence": 0.917,
+      "reason_tags": [
+        "fast_motion",
+        "very_sharp",
+        "good_exposure",
+        "portrait"
+      ],
+      "notes": "High quality segment. \u2014 action/movement",
+      "avg_blur": 643.16,
+      "avg_brightness": 126.61,
+      "avg_motion": 45.22,
+      "has_audio": true
+    },
+    {
+      "source_file": "/Users/bgorzelic/dev/projects/aiaerialsolutions.com/Horizon by Yosemite/flights/1st Flight/02_NORMALIZED/Meta_Glasses/IMG_0171_norm.mp4",
+      "segment_id": 7,
+      "start_time": 131.0,
+      "end_time": 156.0,
+      "duration": 25.0,
+      "confidence": 0.844,
+      "reason_tags": [
+        "fast_motion",
+        "very_sharp",
+        "good_exposure",
+        "portrait"
+      ],
+      "notes": "High quality segment. \u2014 action/movement",
+      "avg_blur": 515.59,
+      "avg_brightness": 128.54,
+      "avg_motion": 53.05,
+      "has_audio": true
+    },
+    {
+      "source_file": "/Users/bgorzelic/dev/projects/aiaerialsolutions.com/Horizon by Yosemite/flights/1st Flight/02_NORMALIZED/Meta_Glasses/IMG_0171_norm.mp4",
+      "segment_id": 8,
+      "start_time": 156.0,
+      "end_time": 180.07,
+      "duration": 24.07,
+      "confidence": 0.828,
+      "reason_tags": [
+        "fast_motion",
+        "very_sharp",
+        "good_exposure",
+        "portrait"
+      ],
+      "notes": "High quality segment. \u2014 action/movement",
+      "avg_blur": 367.15,
+      "avg_brightness": 125.67,
+      "avg_motion": 51.9,
+      "has_audio": true
+    }
+  ],
+  "rejected_duration": 3.0,
+  "selected_duration": 177.07
+}

@@ -1,0 +1,65 @@
+{
+  "source_file": "/Users/bgorzelic/dev/projects/aiaerialsolutions.com/Horizon by Yosemite/flights/1st Flight/02_NORMALIZED/Meta_Glasses/IMG_0175_norm.mp4",
+  "total_duration": 68.766667,
+  "segments": [
+    {
+      "source_file": "/Users/bgorzelic/dev/projects/aiaerialsolutions.com/Horizon by Yosemite/flights/1st Flight/02_NORMALIZED/Meta_Glasses/IMG_0175_norm.mp4",
+      "segment_id": 1,
+      "start_time": 0.0,
+      "end_time": 25.0,
+      "duration": 25.0,
+      "confidence": 0.8,
+      "reason_tags": [
+        "fast_motion",
+        "very_sharp",
+        "good_exposure",
+        "portrait"
+      ],
+      "notes": "Usable segment. \u2014 action/movement",
+      "avg_blur": 3578.06,
+      "avg_brightness": 132.32,
+      "avg_motion": 47.41,
+      "has_audio": true
+    },
+    {
+      "source_file": "/Users/bgorzelic/dev/projects/aiaerialsolutions.com/Horizon by Yosemite/flights/1st Flight/02_NORMALIZED/Meta_Glasses/IMG_0175_norm.mp4",
+      "segment_id": 2,
+      "start_time": 25.0,
+      "end_time": 50.0,
+      "duration": 25.0,
+      "confidence": 0.72,
+      "reason_tags": [
+        "fast_motion",
+        "very_sharp",
+        "good_exposure",
+        "portrait"
+      ],
+      "notes": "Usable segment. \u2014 action/movement",
+      "avg_blur": 844.05,
+      "avg_brightness": 125.49,
+      "avg_motion": 26.96,
+      "has_audio": true
+    },
+    {
+      "source_file": "/Users/bgorzelic/dev/projects/aiaerialsolutions.com/Horizon by Yosemite/flights/1st Flight/02_NORMALIZED/Meta_Glasses/IMG_0175_norm.mp4",
+      "segment_id": 3,
+      "start_time": 50.0,
+      "end_time": 68.77,
+      "duration": 18.77,
+      "confidence": 0.9,
+      "reason_tags": [
+        "fast_motion",
+        "very_sharp",
+        "good_exposure",
+        "portrait"
+      ],
+      "notes": "High quality segment. \u2014 action/movement",
+      "avg_blur": 6107.1,
+      "avg_brightness": 125.12,
+      "avg_motion": 52.97,
+      "has_audio": true
+    }
+  ],
+  "rejected_duration": -0.0,
+  "selected_duration": 68.77
+}

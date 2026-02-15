@@ -3,7 +3,7 @@
 import typer
 
 from skyforge import __version__
-from skyforge.commands import ingest, flights, process, init, telemetry
+from skyforge.commands import ingest, flights, process, init, telemetry, analyze
 
 app = typer.Typer(
     name="skyforge",
@@ -16,6 +16,7 @@ app.add_typer(ingest.app, name="ingest", help="Import, scan, and normalize aeria
 app.add_typer(flights.app, name="flights", help="Track and manage flight sessions")
 app.add_typer(process.app, name="process", help="AI/ML processing on aerial media")
 app.add_typer(telemetry.app, name="telemetry", help="Extract and analyze drone flight telemetry")
+app.add_typer(analyze.app, name="analyze", help="Analyze footage, select segments, export clips")
 
 
 @app.command()

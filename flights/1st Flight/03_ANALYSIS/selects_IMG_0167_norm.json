@@ -1,0 +1,27 @@
+{
+  "source_file": "/Users/bgorzelic/dev/projects/aiaerialsolutions.com/Horizon by Yosemite/flights/1st Flight/02_NORMALIZED/iPhone/IMG_0167_norm.mp4",
+  "total_duration": 23.1,
+  "segments": [
+    {
+      "source_file": "/Users/bgorzelic/dev/projects/aiaerialsolutions.com/Horizon by Yosemite/flights/1st Flight/02_NORMALIZED/iPhone/IMG_0167_norm.mp4",
+      "segment_id": 1,
+      "start_time": 0.0,
+      "end_time": 23.1,
+      "duration": 23.1,
+      "confidence": 0.908,
+      "reason_tags": [
+        "fast_motion",
+        "very_sharp",
+        "good_exposure",
+        "portrait"
+      ],
+      "notes": "High quality segment. \u2014 action/movement",
+      "avg_blur": 393.71,
+      "avg_brightness": 164.22,
+      "avg_motion": 38.49,
+      "has_audio": true
+    }
+  ],
+  "rejected_duration": 0.0,
+  "selected_duration": 23.1
+}
