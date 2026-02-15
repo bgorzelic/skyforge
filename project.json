@@ -1,0 +1,13 @@
+{
+  "name": "1st Flight",
+  "created": "2025-02-14T10:00:00",
+  "devices": ["Drone", "iPhone", "Meta_Glasses"],
+  "location": "Yosemite",
+  "status": "raw",
+  "notes": {
+    "drone": "ATOM drone, 4K H.264 SDR ~30fps, no audio, SRT telemetry with GPS",
+    "iphone": "iPhone HEVC 10-bit HLG HDR (portrait 1080x1920), VFR — needs tonemap + CFR",
+    "meta_glasses": "Meta Ray-Ban Glasses 1504x2000 HEVC SDR VFR — needs CFR",
+    "duplicates": "iPhone video-*_singular_display.MOV files are duplicates of Meta Glasses footage (identical byte sizes)"
+  }
+}

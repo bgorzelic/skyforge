@@ -1,0 +1,55 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+*.egg
+.eggs/
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Testing & coverage
+.coverage
+htmlcov/
+.pytest_cache/
+
+# Environment
+.env
+.env.local
+
+# Media files (large — tracked separately or use Git LFS)
+*.MOV
+*.mov
+*.mp4
+*.MP4
+*.avi
+*.AVI
+*.mkv
+*.m4v
+*.LRV
+*.THM
+
+# Raw/processed footage directories
+01_RAW/
+02_NORMALIZED/
+02_PROXIES/
+04_EXPORTS/
+
+# Ruff
+.ruff_cache/
