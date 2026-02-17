@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "skyforge"
-version = "0.2.0"
+version = "0.3.0"
 description = "CLI companion for FlightDeck — manage aerial footage locally or via FlightDeck API"
 readme = "README.md"
 license = "MIT"

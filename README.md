@@ -52,7 +52,7 @@ That's it. Test it works:
 
 ```bash
 skyforge version
-# Should print: skyforge v0.2.0
+# Should print: skyforge v0.3.0
 ```
 
 ## Usage
@@ -137,7 +137,39 @@ The results:
 - `04_SELECTS/` - The trimmed best segments
 - `05_EXPORTS/` - Report-ready clips with timecode and filename overlays (great for sharing with clients who don't have video software)
 
-### Step 6: Parse Telemetry (Optional)
+### Step 6: Transcode for Sharing (Optional)
+
+Need smaller files for client review, social media, or cloud storage? Skyforge has HandBrake-style presets built in:
+
+```bash
+# See what presets are available
+skyforge transcode presets
+
+# Transcode all your normalized footage to 720p H.265 (great for web/social)
+skyforge transcode run "My First Flight" --preset web
+
+# Need max compatibility for a client who uses Windows Media Player?
+skyforge transcode run "My First Flight" --preset review
+
+# Transcode just one file
+skyforge transcode file video_norm.mp4 --preset mobile
+
+# Preview what would happen without actually doing it
+skyforge transcode run "My First Flight" --preset web --dry-run
+```
+
+The built-in presets:
+
+| Preset | What It Does | Typical Size Reduction |
+|---|---|---|
+| `web` | 720p H.265 — small files for social media and websites | 70-80% smaller |
+| `review` | 1080p H.264 — plays everywhere, good for client review | 40-60% smaller |
+| `archive` | Full resolution H.265 — long-term storage, saves space | 30-50% smaller |
+| `mobile` | 480p H.264 — tiny files for phone preview | 85-95% smaller |
+
+Output goes to `06_TRANSCODED/<preset>/` mirroring your device folder structure.
+
+### Step 7: Parse Telemetry (Optional)
 
 If your drone records SRT telemetry (DJI Avata, ATOM drones, etc.):
 
@@ -161,6 +193,9 @@ This extracts GPS coordinates, altitude, speed, camera settings, and more from y
 | `skyforge telemetry parse <file>` | Parse SRT telemetry to JSON/CSV/GPX/KML |
 | `skyforge telemetry summary <file>` | Show flight telemetry summary |
 | `skyforge telemetry parse-all <dir>` | Parse all SRT files in a project |
+| `skyforge transcode presets` | Show available transcode presets |
+| `skyforge transcode run <dir>` | Transcode all normalized footage |
+| `skyforge transcode file <file>` | Transcode a single video file |
 | `skyforge flights list` | List all flight projects in a directory |
 | `skyforge flights info <dir>` | Show detailed info about a flight project |
 | `skyforge version` | Show version |
@@ -193,6 +228,15 @@ skyforge analyze run "My Flight" \
   --min-confidence 0.5 # Higher = pickier about quality (default: 0.3)
   --skip-export        # Analyze only, don't export clips
   --dry-run            # Show what would be selected without exporting
+```
+
+### Transcode Options
+
+```bash
+skyforge transcode run "My Flight" \
+  --preset web       # Which preset: web, review, archive, mobile
+  --dry-run          # Preview without transcoding
+  --no-skip-existing # Re-transcode even if output already exists
 ```
 
 ## FlightDeck Integration (Advanced)

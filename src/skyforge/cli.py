@@ -13,6 +13,7 @@ from skyforge.commands import (
     process,
     status,
     telemetry,
+    transcode,
 )
 
 app = typer.Typer(
@@ -30,6 +31,10 @@ app.add_typer(analyze.app, name="analyze", help="Analyze footage, select segment
 app.add_typer(export.app, name="export", help="Export deliverables via FlightDeck")
 app.add_typer(status.app, name="status", help="Check FlightDeck job status")
 app.add_typer(auth.app, name="auth", help="Authenticate with FlightDeck API")
+app.add_typer(
+    transcode.app, name="transcode",
+    help="Transcode normalized footage to shareable formats",
+)
 
 
 @app.command()
