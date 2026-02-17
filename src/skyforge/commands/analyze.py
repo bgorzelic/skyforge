@@ -46,8 +46,13 @@ def run(
         console.print("[dim]Configure with: skyforge auth login[/dim]\n")
 
     _run_local(
-        project_dir, min_segment, max_segment, min_confidence,
-        sample_interval, skip_export, dry_run,
+        project_dir,
+        min_segment,
+        max_segment,
+        min_confidence,
+        sample_interval,
+        skip_export,
+        dry_run,
     )
 
 
@@ -73,15 +78,9 @@ def _run_remote(project_dir: Path, config) -> None:
                 _run_local(project_dir, 5.0, 25.0, 0.3, 1.0, False, False)
                 return
 
-            console.print(
-                "[dim]Remote analysis via FlightDeck API.[/dim]"
-            )
-            console.print(
-                "[dim]Upload footage first with: skyforge ingest run[/dim]"
-            )
-            console.print(
-                "[dim]Then check results with: skyforge status job <job_id>[/dim]"
-            )
+            console.print("[dim]Remote analysis via FlightDeck API.[/dim]")
+            console.print("[dim]Upload footage first with: skyforge ingest run[/dim]")
+            console.print("[dim]Then check results with: skyforge status job <job_id>[/dim]")
 
     except FlightDeckUnavailableError:
         console.print("[yellow]FlightDeck unreachable. Falling back to local mode.[/yellow]\n")
@@ -128,11 +127,15 @@ def _run_local(
         raise typer.Exit(1)
 
     # Collect all normalized videos
-    videos = sorted([
-        f for d in norm_dir.iterdir() if d.is_dir()
-        for f in d.iterdir()
-        if f.is_file() and f.suffix.lower() in VIDEO_EXTENSIONS
-    ])
+    videos = sorted(
+        [
+            f
+            for d in norm_dir.iterdir()
+            if d.is_dir()
+            for f in d.iterdir()
+            if f.is_file() and f.suffix.lower() in VIDEO_EXTENSIONS
+        ]
+    )
 
     if not videos:
         console.print("[yellow]No normalized videos found.[/yellow]")
@@ -255,6 +258,7 @@ def show_analysis_summary(
         raise typer.Exit(0)
 
     import json
+
     data = json.loads(master.read_text())
 
     console.print("\n[bold]Analysis Summary[/bold]")
@@ -262,7 +266,7 @@ def show_analysis_summary(
     console.print(f"  Segments: {data['total_segments']}")
     console.print(
         f"  Duration: {data['total_selected_duration']:.0f}s "
-        f"({data['total_selected_duration']/60:.1f} min)"
+        f"({data['total_selected_duration'] / 60:.1f} min)"
     )
 
     if data["segments"]:
@@ -287,6 +291,68 @@ def show_analysis_summary(
             )
 
         console.print(table)
+
+
+@app.command("export")
+def export_report(
+    project_dir: Path = typer.Argument(".", help="Flight project directory"),
+    fmt: str = typer.Option("csv", "--format", "-f", help="Output format: csv or excel"),
+):
+    """Export analysis results to CSV or Excel reports.
+
+    Generates report files in the project root directory:
+
+    \b
+    CSV mode:  report_analysis.csv, report_segments.csv
+    Excel mode: report_<project_name>.xlsx  (requires openpyxl)
+    """
+    from skyforge.core.project import load_project
+
+    proj = detect_project_dir(project_dir)
+    if not proj:
+        console.print("[red]Error:[/red] Not a skyforge project.")
+        raise typer.Exit(1)
+
+    analysis_dir = proj / "03_ANALYSIS"
+    if not analysis_dir.exists():
+        console.print(
+            "[red]Error:[/red] No 03_ANALYSIS/ directory. Run `skyforge analyze run` first."
+        )
+        raise typer.Exit(1)
+
+    meta = load_project(proj)
+    project_name = meta.get("name", proj.name)
+
+    if fmt == "csv":
+        from skyforge.core.reporter import export_analysis_csv, export_segments_csv
+
+        analysis_csv = proj / "report_analysis.csv"
+        segments_csv = proj / "report_segments.csv"
+
+        export_analysis_csv(analysis_dir, analysis_csv)
+        console.print(f"[green]Wrote:[/green] {analysis_csv}")
+
+        export_segments_csv(analysis_dir, segments_csv)
+        console.print(f"[green]Wrote:[/green] {segments_csv}")
+
+    elif fmt == "excel":
+        from skyforge.core.reporter import export_project_excel
+
+        # Sanitize project name for filename
+        safe_name = project_name.replace(" ", "_").replace("/", "-")
+        excel_path = proj / f"report_{safe_name}.xlsx"
+
+        try:
+            export_project_excel(proj, excel_path)
+        except ImportError as exc:
+            console.print(f"[red]Error:[/red] {exc}")
+            raise typer.Exit(1) from None
+
+        console.print(f"[green]Wrote:[/green] {excel_path}")
+
+    else:
+        console.print(f"[red]Error:[/red] Unknown format '{fmt}'. Use 'csv' or 'excel'.")
+        raise typer.Exit(1)
 
 
 def _print_selection_summary(all_selects) -> None:

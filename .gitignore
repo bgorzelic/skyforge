@@ -52,5 +52,14 @@ htmlcov/
 **/03_PROJECT/
 **/04_EXPORTS/
 
+# YOLO model weights
+*.pt
+
+# Additional flight output directories
+**/05_TELEMETRY/
+**/06_TRANSCODED/
+**/07_DETECTIONS/
+**/08_VISION/
+
 # Ruff
 .ruff_cache/

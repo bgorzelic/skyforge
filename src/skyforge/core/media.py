@@ -7,8 +7,17 @@ from pathlib import Path
 
 VIDEO_EXTENSIONS = {".mov", ".mp4", ".m4v", ".avi", ".mkv", ".mts", ".m2ts"}
 IMAGE_EXTENSIONS = {
-    ".jpg", ".jpeg", ".png", ".dng", ".raw", ".tiff",
-    ".tif", ".heic", ".cr2", ".arw", ".nef",
+    ".jpg",
+    ".jpeg",
+    ".png",
+    ".dng",
+    ".raw",
+    ".tiff",
+    ".tif",
+    ".heic",
+    ".cr2",
+    ".arw",
+    ".nef",
 }
 TELEMETRY_EXTENSIONS = {".srt", ".csv", ".gpx", ".kml"}
 PROXY_EXTENSIONS = {".lrv"}
@@ -37,6 +46,7 @@ class MediaInfo:
     is_vfr: bool = False
     device: str = "unknown"
     media_type: str = "unknown"  # video, image, telemetry, proxy, thumbnail
+    gps: tuple[float, float] | None = None  # (latitude, longitude) from EXIF
 
     @property
     def size_mb(self) -> float:
@@ -61,6 +71,60 @@ class MediaInfo:
         return max(self.width, self.height) >= 3840
 
 
+def extract_gps_from_image(path: Path) -> tuple[float, float] | None:
+    """Extract GPS coordinates from image EXIF data.
+
+    Returns (latitude, longitude) in decimal degrees, or None if unavailable.
+    Requires Pillow (pip install skyforge[ai]).
+    """
+    try:
+        from PIL import Image
+        from PIL.ExifTags import GPSTAGS, TAGS
+    except ImportError:
+        return None
+
+    try:
+        img = Image.open(path)
+        exif_data = img._getexif()
+        if not exif_data:
+            return None
+    except Exception:
+        return None
+
+    # Find GPSInfo tag
+    gps_info = {}
+    for tag_id, value in exif_data.items():
+        tag = TAGS.get(tag_id, tag_id)
+        if tag == "GPSInfo":
+            for gps_tag_id, gps_value in value.items():
+                gps_tag = GPSTAGS.get(gps_tag_id, gps_tag_id)
+                gps_info[gps_tag] = gps_value
+            break
+
+    if not gps_info:
+        return None
+
+    def _dms_to_decimal(dms: tuple, ref: str) -> float | None:
+        """Convert degrees/minutes/seconds to decimal degrees."""
+        try:
+            degrees = float(dms[0])
+            minutes = float(dms[1])
+            seconds = float(dms[2])
+            decimal = degrees + minutes / 60 + seconds / 3600
+            if ref in ("S", "W"):
+                decimal = -decimal
+            return decimal
+        except (TypeError, ValueError, IndexError):
+            return None
+
+    lat = _dms_to_decimal(gps_info.get("GPSLatitude", ()), gps_info.get("GPSLatitudeRef", "N"))
+    lon = _dms_to_decimal(gps_info.get("GPSLongitude", ()), gps_info.get("GPSLongitudeRef", "E"))
+
+    if lat is not None and lon is not None:
+        return (round(lat, 6), round(lon, 6))
+    return None
+
+
 def probe_file(path: Path) -> MediaInfo:
     """Extract metadata from a media file using ffprobe."""
     info = MediaInfo(path=path, size_bytes=path.stat().st_size)
@@ -73,15 +137,23 @@ def probe_file(path: Path) -> MediaInfo:
     try:
         result = subprocess.run(
             [
-                "ffprobe", "-v", "error",
-                "-select_streams", "v:0",
-                "-show_entries", "stream=codec_name,width,height,r_frame_rate,avg_frame_rate,"
-                                "pix_fmt,color_transfer,color_primaries,duration",
-                "-show_entries", "format=duration,size",
-                "-of", "json",
+                "ffprobe",
+                "-v",
+                "error",
+                "-select_streams",
+                "v:0",
+                "-show_entries",
+                "stream=codec_name,width,height,r_frame_rate,avg_frame_rate,"
+                "pix_fmt,color_transfer,color_primaries,duration",
+                "-show_entries",
+                "format=duration,size",
+                "-of",
+                "json",
                 str(path),
             ],
-            capture_output=True, text=True, timeout=30,
+            capture_output=True,
+            text=True,
+            timeout=30,
         )
         data = json.loads(result.stdout)
     except (subprocess.TimeoutExpired, json.JSONDecodeError, FileNotFoundError):
@@ -120,13 +192,20 @@ def probe_file(path: Path) -> MediaInfo:
     try:
         audio_result = subprocess.run(
             [
-                "ffprobe", "-v", "error",
-                "-select_streams", "a",
-                "-show_entries", "stream=codec_type",
-                "-of", "csv=p=0",
+                "ffprobe",
+                "-v",
+                "error",
+                "-select_streams",
+                "a",
+                "-show_entries",
+                "stream=codec_type",
+                "-of",
+                "csv=p=0",
                 str(path),
             ],
-            capture_output=True, text=True, timeout=10,
+            capture_output=True,
+            text=True,
+            timeout=10,
         )
         info.has_audio = len(audio_result.stdout.strip()) > 0
     except (subprocess.TimeoutExpired, FileNotFoundError):
@@ -138,15 +217,23 @@ def probe_file(path: Path) -> MediaInfo:
 def scan_directory(directory: Path, recursive: bool = True) -> list[MediaInfo]:
     """Scan a directory for all media files and probe each one."""
     all_extensions = (
-        VIDEO_EXTENSIONS | IMAGE_EXTENSIONS | TELEMETRY_EXTENSIONS
-        | PROXY_EXTENSIONS | THUMBNAIL_EXTENSIONS
+        VIDEO_EXTENSIONS
+        | IMAGE_EXTENSIONS
+        | TELEMETRY_EXTENSIONS
+        | PROXY_EXTENSIONS
+        | THUMBNAIL_EXTENSIONS
     )
     pattern = "**/*" if recursive else "*"
     files = [
-        f for f in directory.glob(pattern)
-        if f.is_file() and f.suffix.lower() in all_extensions
+        f for f in directory.glob(pattern) if f.is_file() and f.suffix.lower() in all_extensions
     ]
-    return [probe_file(f) for f in sorted(files)]
+    results = []
+    for f in sorted(files):
+        info = probe_file(f)
+        if info.media_type == "image":
+            info.gps = extract_gps_from_image(f)
+        results.append(info)
+    return results
 
 
 def detect_device(file_path: Path) -> str:

@@ -11,6 +11,8 @@ PROJECT_DIRS = [
     "02_PROXIES",
     "03_PROJECT",
     "04_EXPORTS",
+    "07_DETECTIONS",
+    "08_VISION",
 ]
 
 

@@ -52,7 +52,7 @@ That's it. Test it works:
 
 ```bash
 skyforge version
-# Should print: skyforge v0.3.0
+# Should print: skyforge v0.4.0
 ```
 
 ## Usage
@@ -196,6 +196,14 @@ This extracts GPS coordinates, altitude, speed, camera settings, and more from y
 | `skyforge transcode presets` | Show available transcode presets |
 | `skyforge transcode run <dir>` | Transcode all normalized footage |
 | `skyforge transcode file <file>` | Transcode a single video file |
+| `skyforge detect run <dir>` | Detect objects in normalized footage (YOLOv8) |
+| `skyforge detect file <file>` | Detect objects in a single video file |
+| `skyforge detect summary <dir>` | Show detection results summary |
+| `skyforge vision profiles` | Show available AI analysis profiles |
+| `skyforge vision run <dir>` | AI vision analysis of normalized footage |
+| `skyforge vision file <file>` | AI vision analysis of a single video |
+| `skyforge telemetry map <file>` | Generate interactive flight map from SRT |
+| `skyforge telemetry map-all <dir>` | Generate maps for all SRT files in project |
 | `skyforge flights list` | List all flight projects in a directory |
 | `skyforge flights info <dir>` | Show detailed info about a flight project |
 | `skyforge version` | Show version |

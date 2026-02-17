@@ -73,14 +73,27 @@ def scan(
                 size = f"{v.size_mb:.0f}MB" if v.size_mb < 1024 else f"{v.size_gb:.1f}GB"
 
                 table.add_row(
-                    v.path.name, v.codec, v.resolution,
-                    fps, dur, size, " ".join(flags) or "—",
+                    v.path.name,
+                    v.codec,
+                    v.resolution,
+                    fps,
+                    dur,
+                    size,
+                    " ".join(flags) or "—",
                 )
 
             console.print(table)
 
         if images:
-            console.print(f"  [dim]{device}:[/dim] {len(images)} images")
+            gps_images = [f for f in images if f.gps]
+            gps_note = f", {len(gps_images)} with GPS" if gps_images else ""
+            console.print(f"  [dim]{device}:[/dim] {len(images)} images{gps_note}")
+            for img in images:
+                if img.gps:
+                    lat, lon = img.gps
+                    console.print(
+                        f"    [dim]{img.path.name}[/dim] [green]{lat:.6f}, {lon:.6f}[/green]"
+                    )
         if other:
             console.print(
                 f"  [dim]{device}:[/dim] {len(other)} other files (telemetry/proxies/thumbnails)"
@@ -138,11 +151,15 @@ def _run_remote(project_dir: Path, config) -> None:
         raise typer.Exit(1)
 
     raw_dir = proj / "01_RAW"
-    videos = sorted([
-        f for d in raw_dir.iterdir() if d.is_dir()
-        for f in d.rglob("*")
-        if f.is_file() and f.suffix.lower() in VIDEO_EXTENSIONS
-    ])
+    videos = sorted(
+        [
+            f
+            for d in raw_dir.iterdir()
+            if d.is_dir()
+            for f in d.rglob("*")
+            if f.is_file() and f.suffix.lower() in VIDEO_EXTENSIONS
+        ]
+    )
 
     if not videos:
         console.print("[yellow]No video files found in 01_RAW/.[/yellow]")
@@ -157,8 +174,7 @@ def _run_remote(project_dir: Path, config) -> None:
         with FlightDeckClient(config) as client:
             if not client.health_check():
                 console.print(
-                    "[yellow]FlightDeck unreachable."
-                    " Falling back to local mode.[/yellow]"
+                    "[yellow]FlightDeck unreachable. Falling back to local mode.[/yellow]"
                 )
                 _run_local(project_dir, 30, 18, False, False)
                 return
@@ -195,16 +211,14 @@ def _run_remote(project_dir: Path, config) -> None:
         _run_local(project_dir, 30, 18, False, False)
 
 
-def _run_local(
-    project_dir: Path, fps: int, crf: int, skip_proxies: bool, dry_run: bool
-) -> None:
+def _run_local(project_dir: Path, fps: int, crf: int, skip_proxies: bool, dry_run: bool) -> None:
     """Run ingest locally using Skyforge core modules."""
     from skyforge.core.pipeline import PipelineConfig, generate_manifest, run_pipeline
 
     proj = detect_project_dir(project_dir)
     if not proj:
         console.print("[red]Error:[/red] Not a skyforge project (no 01_RAW/ directory found).")
-        console.print("[dim]Create one with: skyforge init new \"My Project\"[/dim]")
+        console.print('[dim]Create one with: skyforge init new "My Project"[/dim]')
         raise typer.Exit(1)
 
     raw_dir = proj / "01_RAW"
@@ -236,7 +250,9 @@ def _run_local(
         console=console,
     ) as progress:
         total = sum(
-            1 for d in raw_dir.iterdir() if d.is_dir()
+            1
+            for d in raw_dir.iterdir()
+            if d.is_dir()
             for f in d.rglob("*")
             if f.is_file() and f.suffix.lower() in (VIDEO_EXTENSIONS | IMAGE_EXTENSIONS)
         )

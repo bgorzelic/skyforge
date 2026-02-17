@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "skyforge"
-version = "0.3.0"
+version = "0.4.0"
 description = "CLI companion for FlightDeck — manage aerial footage locally or via FlightDeck API"
 readme = "README.md"
 license = "MIT"
@@ -42,6 +42,20 @@ dev = [
 ai = [
     "opencv-python>=4.9",
     "pillow>=10.0",
+]
+detect = [
+    "ultralytics>=8.0",
+    "torch>=2.0",
+]
+vision = [
+    "anthropic>=0.30",
+    "openai>=1.30",
+]
+reports = [
+    "openpyxl>=3.1",
+]
+all = [
+    "skyforge[ai,detect,vision,reports]",
 ]
 
 [project.scripts]
