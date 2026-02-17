@@ -135,12 +135,18 @@ def build_transcode_command(
         cmd.extend(["-vf", scale])
 
     # Video codec
-    cmd.extend([
-        "-c:v", preset.libcodec,
-        "-pix_fmt", "yuv420p",
-        "-preset", preset.encode_preset,
-        "-crf", str(preset.crf),
-    ])
+    cmd.extend(
+        [
+            "-c:v",
+            preset.libcodec,
+            "-pix_fmt",
+            "yuv420p",
+            "-preset",
+            preset.encode_preset,
+            "-crf",
+            str(preset.crf),
+        ]
+    )
 
     # H.265: tag as hvc1 for Apple/QuickTime compatibility
     if preset.codec == "h265":
@@ -197,7 +203,11 @@ def transcode_file(
 
     try:
         subprocess.run(
-            cmd, check=True, capture_output=True, text=True, timeout=3600,
+            cmd,
+            check=True,
+            capture_output=True,
+            text=True,
+            timeout=3600,
         )
         if output_path.exists():
             result.output_size_bytes = output_path.stat().st_size
@@ -231,8 +241,7 @@ def transcode_project(
         device_out = preset_output_dir / device_dir.name
 
         videos = sorted(
-            f for f in device_dir.rglob("*")
-            if f.is_file() and f.suffix.lower() in VIDEO_EXTENSIONS
+            f for f in device_dir.rglob("*") if f.is_file() and f.suffix.lower() in VIDEO_EXTENSIONS
         )
 
         for video in videos:
@@ -240,7 +249,11 @@ def transcode_project(
                 progress_callback(video, device_dir.name)
 
             result = transcode_file(
-                video, device_out, preset, skip_existing, dry_run,
+                video,
+                device_out,
+                preset,
+                skip_existing,
+                dry_run,
             )
             results.append(result)
 
@@ -253,27 +266,27 @@ def transcode_project(
 
 
 def generate_transcode_manifest(
-    results: list[TranscodeResult], output: Path,
+    results: list[TranscodeResult],
+    output: Path,
 ) -> None:
     """Write a JSON manifest of transcode results."""
     entries = []
     for r in results:
         reduction = r.size_reduction_pct
-        entries.append({
-            "source": str(r.source),
-            "output": str(r.output) if r.output else None,
-            "preset": r.preset,
-            "skipped": r.skipped,
-            "error": r.error,
-            "input_size_mb": round(r.input_size_bytes / (1024 * 1024), 1),
-            "output_size_mb": (
-                round(r.output_size_bytes / (1024 * 1024), 1)
-                if r.output_size_bytes else None
-            ),
-            "size_reduction_pct": (
-                round(reduction, 1) if reduction is not None else None
-            ),
-        })
+        entries.append(
+            {
+                "source": str(r.source),
+                "output": str(r.output) if r.output else None,
+                "preset": r.preset,
+                "skipped": r.skipped,
+                "error": r.error,
+                "input_size_mb": round(r.input_size_bytes / (1024 * 1024), 1),
+                "output_size_mb": (
+                    round(r.output_size_bytes / (1024 * 1024), 1) if r.output_size_bytes else None
+                ),
+                "size_reduction_pct": (round(reduction, 1) if reduction is not None else None),
+            }
+        )
 
     output.parent.mkdir(parents=True, exist_ok=True)
     output.write_text(json.dumps(entries, indent=2))

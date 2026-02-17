@@ -22,7 +22,7 @@ def list_flights(
 
     if not candidates:
         console.print("[yellow]No flight projects found.[/yellow]")
-        console.print("[dim]Create one with: skyforge init new \"My Flight\"[/dim]")
+        console.print('[dim]Create one with: skyforge init new "My Flight"[/dim]')
         raise typer.Exit(0)
 
     table = Table(title="Flight Projects")

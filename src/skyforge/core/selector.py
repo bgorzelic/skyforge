@@ -10,6 +10,7 @@ from skyforge.core.analyzer import FrameAnalysis, VideoAnalysis
 @dataclass
 class Segment:
     """A selected video segment with quality scoring."""
+
     source_file: str
     segment_id: int
     start_time: float
@@ -30,6 +31,7 @@ class Segment:
 @dataclass
 class SelectsResult:
     """Selection results for a single video."""
+
     source_file: str
     total_duration: float
     segments: list[Segment] = field(default_factory=list)
@@ -135,9 +137,9 @@ def select_segments(
             avg_blur = sum(f.blur_score for f in seg_frames) / len(seg_frames)
             avg_brightness = sum(f.brightness for f in seg_frames) / len(seg_frames)
             avg_motion = sum(f.motion_score for f in seg_frames) / len(seg_frames)
-            avg_score = sum(
-                s for f, s, t in frames if seg_start <= f.timestamp < seg_end
-            ) / len(seg_frames)
+            avg_score = sum(s for f, s, t in frames if seg_start <= f.timestamp < seg_end) / len(
+                seg_frames
+            )
 
             # Determine tags
             tags = _tag_segment(seg_frames, avg_motion, avg_blur, avg_brightness, analysis)
@@ -195,6 +197,7 @@ def save_selects(selects: SelectsResult, output: Path) -> None:
 # ============================================================================
 # Internal scoring
 # ============================================================================
+
 
 def _score_frame(
     fa: FrameAnalysis,

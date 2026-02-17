@@ -57,18 +57,10 @@ def list_presets() -> None:
 
 @app.command("run")
 def run(
-    project_dir: Path = typer.Argument(
-        ".", help="Flight project directory"
-    ),
-    preset_name: str = typer.Option(
-        "web", "--preset", "-p", help="Transcode preset to apply"
-    ),
-    dry_run: bool = typer.Option(
-        False, "--dry-run", help="Preview without writing files"
-    ),
-    skip_existing: bool = typer.Option(
-        True, help="Skip files already transcoded"
-    ),
+    project_dir: Path = typer.Argument(".", help="Flight project directory"),
+    preset_name: str = typer.Option("web", "--preset", "-p", help="Transcode preset to apply"),
+    dry_run: bool = typer.Option(False, "--dry-run", help="Preview without writing files"),
+    skip_existing: bool = typer.Option(True, help="Skip files already transcoded"),
 ) -> None:
     """Transcode all normalized footage to a shareable format.
 
@@ -89,21 +81,13 @@ def run(
     presets = load_presets()
     if preset_name not in presets:
         names = ", ".join(presets.keys())
-        console.print(
-            f"[red]Error:[/red] Unknown preset '{preset_name}'."
-            f" Available: {names}"
-        )
+        console.print(f"[red]Error:[/red] Unknown preset '{preset_name}'. Available: {names}")
         raise typer.Exit(1)
 
     proj = detect_project_dir(project_dir)
     if not proj:
-        console.print(
-            "[red]Error:[/red] Not a skyforge project"
-            " (no 01_RAW/ directory found)."
-        )
-        console.print(
-            '[dim]Create one with: skyforge init new "My Project"[/dim]'
-        )
+        console.print("[red]Error:[/red] Not a skyforge project (no 01_RAW/ directory found).")
+        console.print('[dim]Create one with: skyforge init new "My Project"[/dim]')
         raise typer.Exit(1)
 
     norm_dir = proj / "02_NORMALIZED"
@@ -111,8 +95,7 @@ def run(
 
     if not norm_dir.exists():
         console.print(
-            "[red]Error:[/red] No 02_NORMALIZED/ directory."
-            " Run `skyforge ingest run` first."
+            "[red]Error:[/red] No 02_NORMALIZED/ directory. Run `skyforge ingest run` first."
         )
         raise typer.Exit(1)
 
@@ -120,7 +103,9 @@ def run(
 
     # Count videos for progress bar
     total = sum(
-        1 for d in norm_dir.iterdir() if d.is_dir()
+        1
+        for d in norm_dir.iterdir()
+        if d.is_dir()
         for f in d.rglob("*")
         if f.is_file() and f.suffix.lower() in VIDEO_EXTENSIONS
     )
@@ -129,11 +114,7 @@ def run(
         console.print("[yellow]No normalized videos found.[/yellow]")
         raise typer.Exit(0)
 
-    res_label = (
-        f"{preset.max_width}px max width"
-        if preset.max_width
-        else "source resolution"
-    )
+    res_label = f"{preset.max_width}px max width" if preset.max_width else "source resolution"
 
     console.print("\n[bold]Skyforge Transcode Pipeline[/bold]")
     console.print(f"  Project:  {proj}")
@@ -142,9 +123,7 @@ def run(
     console.print(f"  Output:   {res_label}")
     console.print(f"  Videos:   {total}")
     if dry_run:
-        console.print(
-            "  [yellow]DRY RUN — no files will be written[/yellow]"
-        )
+        console.print("  [yellow]DRY RUN — no files will be written[/yellow]")
     console.print()
 
     with Progress(
@@ -159,13 +138,18 @@ def run(
 
         def on_progress(file: Path, device: str) -> None:
             progress.update(
-                task, advance=1,
+                task,
+                advance=1,
                 description=f"[cyan]{device}[/cyan] {file.name}",
             )
 
         results = transcode_project(
-            norm_dir, transcode_dir, preset,
-            skip_existing, dry_run, on_progress,
+            norm_dir,
+            transcode_dir,
+            preset,
+            skip_existing,
+            dry_run,
+            on_progress,
         )
 
     # Summary
@@ -174,9 +158,7 @@ def run(
     errors = [r for r in results if r.error]
 
     console.print()
-    console.print(
-        f"[bold green]Transcoded:[/bold green] {len(processed)} files"
-    )
+    console.print(f"[bold green]Transcoded:[/bold green] {len(processed)} files")
     if skipped:
         console.print(f"[dim]Skipped:[/dim] {len(skipped)} files")
     if errors:
@@ -200,9 +182,7 @@ def run(
     if not dry_run and results:
         manifest = transcode_dir / f"manifest_{preset_name}.json"
         generate_transcode_manifest(results, manifest)
-        console.print(
-            f"\n[bold]Output:[/bold]   {transcode_dir / preset_name}"
-        )
+        console.print(f"\n[bold]Output:[/bold]   {transcode_dir / preset_name}")
         console.print(f"[bold]Manifest:[/bold] {manifest}")
 
     console.print()
@@ -210,18 +190,10 @@ def run(
 
 @app.command("file")
 def transcode_single(
-    input_file: Path = typer.Argument(
-        ..., help="Input video file"
-    ),
-    preset_name: str = typer.Option(
-        "web", "--preset", "-p", help="Transcode preset to use"
-    ),
-    output: Path | None = typer.Option(
-        None, "-o", "--output", help="Output file path"
-    ),
-    dry_run: bool = typer.Option(
-        False, "--dry-run", help="Show FFmpeg command without running"
-    ),
+    input_file: Path = typer.Argument(..., help="Input video file"),
+    preset_name: str = typer.Option("web", "--preset", "-p", help="Transcode preset to use"),
+    output: Path | None = typer.Option(None, "-o", "--output", help="Output file path"),
+    dry_run: bool = typer.Option(False, "--dry-run", help="Show FFmpeg command without running"),
 ) -> None:
     """Transcode a single video file using a named preset.
 
@@ -240,18 +212,13 @@ def transcode_single(
     )
 
     if not input_file.exists():
-        console.print(
-            f"[red]Error:[/red] File '{input_file}' not found."
-        )
+        console.print(f"[red]Error:[/red] File '{input_file}' not found.")
         raise typer.Exit(1)
 
     presets = load_presets()
     if preset_name not in presets:
         names = ", ".join(presets.keys())
-        console.print(
-            f"[red]Error:[/red] Unknown preset '{preset_name}'."
-            f" Available: {names}"
-        )
+        console.print(f"[red]Error:[/red] Unknown preset '{preset_name}'. Available: {names}")
         raise typer.Exit(1)
 
     preset = presets[preset_name]
@@ -259,18 +226,23 @@ def transcode_single(
 
     if dry_run:
         info = probe_file(input_file)
-        out_path = output or (
-            output_dir / f"{input_file.stem}_{preset_name}.mp4"
-        )
+        out_path = output or (output_dir / f"{input_file.stem}_{preset_name}.mp4")
         cmd = build_transcode_command(
-            input_file, out_path, preset, info.has_audio,
+            input_file,
+            out_path,
+            preset,
+            info.has_audio,
         )
         console.print("[yellow]Dry run — FFmpeg command:[/yellow]")
         console.print(" ".join(cmd))
         return
 
     result = transcode_file(
-        input_file, output_dir, preset, skip_existing=True, dry_run=False,
+        input_file,
+        output_dir,
+        preset,
+        skip_existing=True,
+        dry_run=False,
     )
 
     if result.skipped:

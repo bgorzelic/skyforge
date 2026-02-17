@@ -13,6 +13,7 @@ import numpy as np
 @dataclass
 class SceneChange:
     """A detected scene change point."""
+
     timestamp: float
     score: float
 
@@ -20,6 +21,7 @@ class SceneChange:
 @dataclass
 class AudioPeak:
     """A detected audio peak."""
+
     timestamp: float
     amplitude: float
 
@@ -27,6 +29,7 @@ class AudioPeak:
 @dataclass
 class FrameAnalysis:
     """Analysis results for a single sampled frame."""
+
     timestamp: float
     blur_score: float  # higher = sharper
     brightness: float  # 0-255
@@ -40,6 +43,7 @@ class FrameAnalysis:
 @dataclass
 class VideoAnalysis:
     """Complete analysis results for a single video file."""
+
     source_file: str
     duration: float = 0.0
     width: int = 0
@@ -64,6 +68,7 @@ class VideoAnalysis:
 # Scene change detection (FFmpeg scdet filter)
 # ============================================================================
 
+
 def detect_scene_changes(video_path: Path, threshold: float = 27.0) -> list[SceneChange]:
     """Detect scene changes using PySceneDetect (ContentDetector).
 
@@ -81,10 +86,12 @@ def detect_scene_changes(video_path: Path, threshold: float = 27.0) -> list[Scen
         scene_list = scene_manager.get_scene_list()
         changes = []
         for start, _end in scene_list:
-            changes.append(SceneChange(
-                timestamp=start.get_seconds(),
-                score=1.0,  # PySceneDetect doesn't expose per-cut scores directly
-            ))
+            changes.append(
+                SceneChange(
+                    timestamp=start.get_seconds(),
+                    score=1.0,  # PySceneDetect doesn't expose per-cut scores directly
+                )
+            )
         return changes
 
     except ImportError:
@@ -95,9 +102,16 @@ def detect_scene_changes(video_path: Path, threshold: float = 27.0) -> list[Scen
 def _detect_scenes_ffmpeg(video_path: Path, threshold: float = 0.3) -> list[SceneChange]:
     """Fallback scene detection using FFmpeg's scdet filter."""
     cmd = [
-        "ffmpeg", "-hide_banner", "-i", str(video_path),
-        "-vf", f"scdet=threshold={threshold}:sc_pass=1",
-        "-an", "-f", "null", "-"
+        "ffmpeg",
+        "-hide_banner",
+        "-i",
+        str(video_path),
+        "-vf",
+        f"scdet=threshold={threshold}:sc_pass=1",
+        "-an",
+        "-f",
+        "null",
+        "-",
     ]
     result = subprocess.run(cmd, capture_output=True, text=True, timeout=300)
     stderr = result.stderr
@@ -105,10 +119,12 @@ def _detect_scenes_ffmpeg(video_path: Path, threshold: float = 0.3) -> list[Scen
     changes = []
     pattern = re.compile(r"lavfi\.scd\.time:\s*([\d.]+).*?lavfi\.scd\.score:\s*([\d.]+)")
     for match in pattern.finditer(stderr):
-        changes.append(SceneChange(
-            timestamp=float(match.group(1)),
-            score=float(match.group(2)),
-        ))
+        changes.append(
+            SceneChange(
+                timestamp=float(match.group(1)),
+                score=float(match.group(2)),
+            )
+        )
 
     return changes
 
@@ -116,6 +132,7 @@ def _detect_scenes_ffmpeg(video_path: Path, threshold: float = 0.3) -> list[Scen
 # ============================================================================
 # Contact sheet / keyframe extraction
 # ============================================================================
+
 
 def extract_contact_sheet(
     video_path: Path,
@@ -128,9 +145,15 @@ def extract_contact_sheet(
     pattern = str(output_dir / "frame_%04d.jpg")
 
     cmd = [
-        "ffmpeg", "-hide_banner", "-y", "-i", str(video_path),
-        "-vf", f"fps=1/{interval},scale={width}:-1",
-        "-q:v", "3",
+        "ffmpeg",
+        "-hide_banner",
+        "-y",
+        "-i",
+        str(video_path),
+        "-vf",
+        f"fps=1/{interval},scale={width}:-1",
+        "-q:v",
+        "3",
         pattern,
     ]
     subprocess.run(cmd, capture_output=True, text=True, timeout=300)
@@ -158,10 +181,17 @@ def extract_contact_sheet_montage(
     rows = (total_frames + cols - 1) // cols
 
     cmd = [
-        "ffmpeg", "-hide_banner", "-y", "-i", str(video_path),
-        "-vf", f"fps=1/{interval},scale={thumb_width}:-1,tile={cols}x{rows}",
-        "-frames:v", "1",
-        "-q:v", "3",
+        "ffmpeg",
+        "-hide_banner",
+        "-y",
+        "-i",
+        str(video_path),
+        "-vf",
+        f"fps=1/{interval},scale={thumb_width}:-1,tile={cols}x{rows}",
+        "-frames:v",
+        "1",
+        "-q:v",
+        "3",
         str(output_path),
     ]
     subprocess.run(cmd, capture_output=True, text=True, timeout=300)
@@ -173,6 +203,7 @@ def extract_contact_sheet_montage(
 # ============================================================================
 # Audio analysis
 # ============================================================================
+
 
 def analyze_audio(video_path: Path, output_dir: Path) -> tuple[list[AudioPeak], Path | None]:
     """Analyze audio: extract waveform image and detect peaks."""
@@ -187,18 +218,30 @@ def analyze_audio(video_path: Path, output_dir: Path) -> tuple[list[AudioPeak], 
     # Generate waveform image
     waveform_path = output_dir / "waveform.png"
     cmd = [
-        "ffmpeg", "-hide_banner", "-y", "-i", str(video_path),
-        "-filter_complex", "showwavespic=s=1200x200:colors=cyan",
-        "-frames:v", "1",
+        "ffmpeg",
+        "-hide_banner",
+        "-y",
+        "-i",
+        str(video_path),
+        "-filter_complex",
+        "showwavespic=s=1200x200:colors=cyan",
+        "-frames:v",
+        "1",
         str(waveform_path),
     ]
     subprocess.run(cmd, capture_output=True, text=True, timeout=120)
 
     # Detect audio peaks using astats
     cmd = [
-        "ffmpeg", "-hide_banner", "-i", str(video_path),
-        "-af", "silencedetect=noise=-30dB:d=1",
-        "-f", "null", "-"
+        "ffmpeg",
+        "-hide_banner",
+        "-i",
+        str(video_path),
+        "-af",
+        "silencedetect=noise=-30dB:d=1",
+        "-f",
+        "null",
+        "-",
     ]
     result = subprocess.run(cmd, capture_output=True, text=True, timeout=120)
 
@@ -225,19 +268,23 @@ def analyze_audio(video_path: Path, output_dir: Path) -> tuple[list[AudioPeak], 
         prev_end = 0.0
         for ss in silence_starts:
             if ss > prev_end + 1.0:
-                peaks.append(AudioPeak(
-                    timestamp=(prev_end + ss) / 2,
-                    amplitude=0.7,
-                ))
+                peaks.append(
+                    AudioPeak(
+                        timestamp=(prev_end + ss) / 2,
+                        amplitude=0.7,
+                    )
+                )
             prev_end = ss
         # Check for silence_ends
         for se in silence_ends:
             prev_end = max(prev_end, se)
         if duration > prev_end + 1.0:
-            peaks.append(AudioPeak(
-                timestamp=(prev_end + duration) / 2,
-                amplitude=0.7,
-            ))
+            peaks.append(
+                AudioPeak(
+                    timestamp=(prev_end + duration) / 2,
+                    amplitude=0.7,
+                )
+            )
 
     wf = waveform_path if waveform_path.exists() else None
     return peaks, wf
@@ -246,6 +293,7 @@ def analyze_audio(video_path: Path, output_dir: Path) -> tuple[list[AudioPeak], 
 # ============================================================================
 # Frame-level analysis (OpenCV)
 # ============================================================================
+
 
 def analyze_frames(
     video_path: Path,
@@ -295,16 +343,18 @@ def analyze_frames(
         is_overexposed = bool(brightness > bright_threshold)
         is_blurry = bool(blur_score < blur_threshold)
 
-        analyses.append(FrameAnalysis(
-            timestamp=timestamp,
-            blur_score=round(blur_score, 2),
-            brightness=round(brightness, 2),
-            contrast=round(contrast, 2),
-            motion_score=round(motion_score, 2),
-            is_dark=is_dark,
-            is_overexposed=is_overexposed,
-            is_blurry=is_blurry,
-        ))
+        analyses.append(
+            FrameAnalysis(
+                timestamp=timestamp,
+                blur_score=round(blur_score, 2),
+                brightness=round(brightness, 2),
+                contrast=round(contrast, 2),
+                motion_score=round(motion_score, 2),
+                is_dark=is_dark,
+                is_overexposed=is_overexposed,
+                is_blurry=is_blurry,
+            )
+        )
 
         prev_gray = gray
         frame_idx += frame_interval
@@ -317,8 +367,11 @@ def analyze_frames(
 # Full video analysis orchestrator
 # ============================================================================
 
+
 def analyze_video(
-    video_path: Path, output_dir: Path, sample_interval: float = 1.0,
+    video_path: Path,
+    output_dir: Path,
+    sample_interval: float = 1.0,
 ) -> VideoAnalysis:
     """Run complete analysis on a single video file."""
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -369,10 +422,17 @@ def analyze_video(
 # Helpers
 # ============================================================================
 
+
 def _get_duration(video_path: Path) -> float:
     cmd = [
-        "ffprobe", "-v", "error", "-show_entries", "format=duration",
-        "-of", "default=nw=1:nk=1", str(video_path),
+        "ffprobe",
+        "-v",
+        "error",
+        "-show_entries",
+        "format=duration",
+        "-of",
+        "default=nw=1:nk=1",
+        str(video_path),
     ]
     result = subprocess.run(cmd, capture_output=True, text=True, timeout=30)
     try:
@@ -383,9 +443,16 @@ def _get_duration(video_path: Path) -> float:
 
 def _has_audio(video_path: Path) -> bool:
     cmd = [
-        "ffprobe", "-v", "error", "-select_streams", "a",
-        "-show_entries", "stream=codec_type",
-        "-of", "csv=p=0", str(video_path),
+        "ffprobe",
+        "-v",
+        "error",
+        "-select_streams",
+        "a",
+        "-show_entries",
+        "stream=codec_type",
+        "-of",
+        "csv=p=0",
+        str(video_path),
     ]
     result = subprocess.run(cmd, capture_output=True, text=True, timeout=10)
     return len(result.stdout.strip()) > 0
@@ -393,11 +460,18 @@ def _has_audio(video_path: Path) -> bool:
 
 def _get_metadata(video_path: Path) -> dict:
     cmd = [
-        "ffprobe", "-v", "error",
-        "-select_streams", "v:0",
-        "-show_entries", "stream=codec_name,width,height,r_frame_rate,duration",
-        "-show_entries", "format=duration",
-        "-of", "json", str(video_path),
+        "ffprobe",
+        "-v",
+        "error",
+        "-select_streams",
+        "v:0",
+        "-show_entries",
+        "stream=codec_name,width,height,r_frame_rate,duration",
+        "-show_entries",
+        "format=duration",
+        "-of",
+        "json",
+        str(video_path),
     ]
     result = subprocess.run(cmd, capture_output=True, text=True, timeout=30)
     try:
@@ -428,8 +502,14 @@ def _get_metadata(video_path: Path) -> dict:
 
 def _dump_ffprobe(video_path: Path, output_path: Path) -> None:
     cmd = [
-        "ffprobe", "-v", "quiet", "-print_format", "json",
-        "-show_format", "-show_streams", str(video_path),
+        "ffprobe",
+        "-v",
+        "quiet",
+        "-print_format",
+        "json",
+        "-show_format",
+        "-show_streams",
+        str(video_path),
     ]
     result = subprocess.run(cmd, capture_output=True, text=True, timeout=30)
     output_path.write_text(result.stdout)

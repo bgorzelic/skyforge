@@ -46,8 +46,7 @@ def login(
                 f"[yellow]Warning:[/yellow] Could not reach FlightDeck at {config.api_url}"
             )
             console.print(
-                "[dim]The key is saved"
-                " - connection may work once the server is running.[/dim]"
+                "[dim]The key is saved - connection may work once the server is running.[/dim]"
             )
 
 

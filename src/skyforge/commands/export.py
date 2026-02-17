@@ -50,8 +50,7 @@ def export_deliverable(
     except FlightDeckUnavailableError:
         console.print(f"[red]Error:[/red] FlightDeck not available at {config.api_url}")
         console.print(
-            "[dim]Check the connection or run analysis locally:"
-            " skyforge analyze run[/dim]"
+            "[dim]Check the connection or run analysis locally: skyforge analyze run[/dim]"
         )
         raise typer.Exit(1) from None
     except FlightDeckError as e:

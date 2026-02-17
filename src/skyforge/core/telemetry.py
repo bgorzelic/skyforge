@@ -62,9 +62,7 @@ _TELEMETRY_PATTERN = re.compile(
     r"ZOOM:([\d.]+)X"
 )
 
-_TIMESTAMP_PATTERN = re.compile(
-    r"(\d{2}:\d{2}:\d{2},\d{3})\s*-->\s*(\d{2}:\d{2}:\d{2},\d{3})"
-)
+_TIMESTAMP_PATTERN = re.compile(r"(\d{2}:\d{2}:\d{2},\d{3})\s*-->\s*(\d{2}:\d{2}:\d{2},\d{3})")
 
 
 def parse_srt(srt_path: Path) -> list[TelemetryFrame]:
@@ -150,19 +148,15 @@ def export_gpx(frames: list[TelemetryFrame], output: Path, name: str = "Flight T
 
     gpx_lines = [
         '<?xml version="1.0" encoding="UTF-8"?>',
-        '<gpx version="1.1" creator="skyforge"'
-        ' xmlns="http://www.topografix.com/GPX/1/1">',
-        f'  <trk><name>{name}</name><trkseg>',
+        '<gpx version="1.1" creator="skyforge" xmlns="http://www.topografix.com/GPX/1/1">',
+        f"  <trk><name>{name}</name><trkseg>",
     ]
 
     for p in points:
         ele = f"<ele>{p.height_m}</ele>" if p.height_m is not None else ""
-        gpx_lines.append(
-            f'    <trkpt lat="{p.latitude}" lon="{p.longitude}">'
-            f'{ele}</trkpt>'
-        )
+        gpx_lines.append(f'    <trkpt lat="{p.latitude}" lon="{p.longitude}">{ele}</trkpt>')
 
-    gpx_lines.extend(['  </trkseg></trk>', '</gpx>'])
+    gpx_lines.extend(["  </trkseg></trk>", "</gpx>"])
     output.write_text("\n".join(gpx_lines))
 
 
@@ -172,10 +166,7 @@ def export_kml(frames: list[TelemetryFrame], output: Path, name: str = "Flight T
     if not points:
         return
 
-    coords = "\n".join(
-        f"        {p.longitude},{p.latitude},{p.height_m or 0}"
-        for p in points
-    )
+    coords = "\n".join(f"        {p.longitude},{p.latitude},{p.height_m or 0}" for p in points)
 
     takeoff = f"{points[0].longitude},{points[0].latitude},{points[0].height_m or 0}"
     landing = f"{points[-1].longitude},{points[-1].latitude},{points[-1].height_m or 0}"
@@ -239,9 +230,9 @@ def summary(frames: list[TelemetryFrame]) -> dict:
         "max_speed_mph": max(speeds) * 2.23694 if speeds else None,
         "max_distance_m": max(distances) if distances else None,
         "iso_range": (
-            f"{min(f.iso for f in frames if f.iso)}"
-            f"-{max(f.iso for f in frames if f.iso)}"
-            if any(f.iso for f in frames) else None
+            f"{min(f.iso for f in frames if f.iso)}-{max(f.iso for f in frames if f.iso)}"
+            if any(f.iso for f in frames)
+            else None
         ),
     }
 

@@ -18,7 +18,9 @@ def new_project(
     name: str = typer.Argument(..., help="Project name (e.g., '2nd Flight', 'Downtown Survey')"),
     base_dir: Path = typer.Option(".", help="Parent directory for the project"),
     devices: list[str] | None = typer.Option(
-        None, "--device", "-d",
+        None,
+        "--device",
+        "-d",
         help="Device directories to create (repeatable). Default: Drone, iPhone, Meta_Glasses",
     ),
 ):

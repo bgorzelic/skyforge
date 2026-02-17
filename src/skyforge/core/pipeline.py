@@ -113,6 +113,7 @@ def process_image(source: Path, norm_dir: Path, config: PipelineConfig) -> Proce
 
     # For images, just copy (future: convert RAW to TIFF/JPEG)
     import shutil
+
     shutil.copy2(source, dest)
     result.normalized = dest
     return result
@@ -142,10 +143,13 @@ def run_pipeline(
         device_proxy.mkdir(parents=True, exist_ok=True)
 
         # Collect media files (recursive — handles nested DCIM/ structures)
-        files = sorted([
-            f for f in device_dir.rglob("*")
-            if f.is_file() and f.suffix.lower() in (VIDEO_EXTENSIONS | IMAGE_EXTENSIONS)
-        ])
+        files = sorted(
+            [
+                f
+                for f in device_dir.rglob("*")
+                if f.is_file() and f.suffix.lower() in (VIDEO_EXTENSIONS | IMAGE_EXTENSIONS)
+            ]
+        )
 
         for f in files:
             if progress_callback:
@@ -161,6 +165,7 @@ def run_pipeline(
 
         # Copy telemetry/SRT files (recursive)
         import shutil
+
         for srt in device_dir.rglob("*.SRT"):
             dest = device_norm / srt.name
             if not dest.exists():
@@ -202,6 +207,7 @@ def generate_manifest(results: list[ProcessingResult], output: Path) -> None:
 # Internal FFmpeg runners
 # ============================================================================
 
+
 def _run_normalize(source: Path, output: Path, info: MediaInfo, config: PipelineConfig) -> None:
     """Run FFmpeg to normalize a video file."""
     cmd = ["ffmpeg", "-hide_banner", "-y", "-i", str(source)]
@@ -214,13 +220,20 @@ def _run_normalize(source: Path, output: Path, info: MediaInfo, config: Pipeline
     cmd.extend(["-fps_mode", "cfr", "-r", str(config.target_fps)])
 
     # H.264 encoding
-    cmd.extend([
-        "-c:v", "libx264",
-        "-pix_fmt", "yuv420p",
-        "-preset", "veryfast",
-        "-crf", str(config.crf),
-        "-x264-params", "keyint=60:min-keyint=60:scenecut=0",
-    ])
+    cmd.extend(
+        [
+            "-c:v",
+            "libx264",
+            "-pix_fmt",
+            "yuv420p",
+            "-preset",
+            "veryfast",
+            "-crf",
+            str(config.crf),
+            "-x264-params",
+            "keyint=60:min-keyint=60:scenecut=0",
+        ]
+    )
 
     # Audio
     if info.has_audio:
@@ -238,10 +251,21 @@ def _run_proxy(source: Path, output: Path, config: PipelineConfig) -> None:
     """Run FFmpeg to generate a lightweight proxy."""
     info = probe_file(source)
     cmd = [
-        "ffmpeg", "-hide_banner", "-y", "-i", str(source),
-        "-vf", f"scale={config.proxy_scale}",
-        "-c:v", "libx264", "-pix_fmt", "yuv420p",
-        "-preset", "veryfast", "-crf", str(config.proxy_crf),
+        "ffmpeg",
+        "-hide_banner",
+        "-y",
+        "-i",
+        str(source),
+        "-vf",
+        f"scale={config.proxy_scale}",
+        "-c:v",
+        "libx264",
+        "-pix_fmt",
+        "yuv420p",
+        "-preset",
+        "veryfast",
+        "-crf",
+        str(config.proxy_crf),
     ]
     if info.has_audio:
         cmd.extend(["-c:a", "aac", "-b:a", config.proxy_audio_bitrate])

@@ -30,13 +30,27 @@ def trim_segment(
         return output
 
     cmd = [
-        "ffmpeg", "-hide_banner", "-y",
-        "-ss", str(segment.start_time),
-        "-i", str(source),
-        "-t", str(segment.duration),
-        "-c:v", "libx264", "-pix_fmt", "yuv420p",
-        "-preset", "veryfast", "-crf", str(crf),
-        "-fps_mode", "cfr", "-r", "30",
+        "ffmpeg",
+        "-hide_banner",
+        "-y",
+        "-ss",
+        str(segment.start_time),
+        "-i",
+        str(source),
+        "-t",
+        str(segment.duration),
+        "-c:v",
+        "libx264",
+        "-pix_fmt",
+        "yuv420p",
+        "-preset",
+        "veryfast",
+        "-crf",
+        str(crf),
+        "-fps_mode",
+        "cfr",
+        "-r",
+        "30",
     ]
 
     if segment.has_audio:
@@ -91,14 +105,29 @@ def export_report_ready(
     vf = ",".join(filters)
 
     cmd = [
-        "ffmpeg", "-hide_banner", "-y",
-        "-ss", str(segment.start_time),
-        "-i", str(source),
-        "-t", str(segment.duration),
-        "-vf", vf,
-        "-c:v", "libx264", "-pix_fmt", "yuv420p",
-        "-preset", "veryfast", "-crf", "22",
-        "-fps_mode", "cfr", "-r", "30",
+        "ffmpeg",
+        "-hide_banner",
+        "-y",
+        "-ss",
+        str(segment.start_time),
+        "-i",
+        str(source),
+        "-t",
+        str(segment.duration),
+        "-vf",
+        vf,
+        "-c:v",
+        "libx264",
+        "-pix_fmt",
+        "yuv420p",
+        "-preset",
+        "veryfast",
+        "-crf",
+        "22",
+        "-fps_mode",
+        "cfr",
+        "-r",
+        "30",
     ]
 
     if segment.has_audio:
