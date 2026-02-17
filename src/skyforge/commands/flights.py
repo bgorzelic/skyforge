@@ -98,5 +98,6 @@ def flight_info(
                 flags.append("HDR")
             if sample.is_vfr:
                 flags.append("VFR")
-            console.print(f"    Format: {sample.codec} {sample.resolution} {sample.fps:.0f}fps {' '.join(flags)}")
+            fmt = f"{sample.codec} {sample.resolution} {sample.fps:.0f}fps"
+            console.print(f"    Format: {fmt} {' '.join(flags)}")
         console.print()

@@ -2,12 +2,14 @@
 
 import json
 import subprocess
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from pathlib import Path
 
-
 VIDEO_EXTENSIONS = {".mov", ".mp4", ".m4v", ".avi", ".mkv", ".mts", ".m2ts"}
-IMAGE_EXTENSIONS = {".jpg", ".jpeg", ".png", ".dng", ".raw", ".tiff", ".tif", ".heic", ".cr2", ".arw", ".nef"}
+IMAGE_EXTENSIONS = {
+    ".jpg", ".jpeg", ".png", ".dng", ".raw", ".tiff",
+    ".tif", ".heic", ".cr2", ".arw", ".nef",
+}
 TELEMETRY_EXTENSIONS = {".srt", ".csv", ".gpx", ".kml"}
 PROXY_EXTENSIONS = {".lrv"}
 THUMBNAIL_EXTENSIONS = {".thm"}
@@ -135,9 +137,15 @@ def probe_file(path: Path) -> MediaInfo:
 
 def scan_directory(directory: Path, recursive: bool = True) -> list[MediaInfo]:
     """Scan a directory for all media files and probe each one."""
-    all_extensions = VIDEO_EXTENSIONS | IMAGE_EXTENSIONS | TELEMETRY_EXTENSIONS | PROXY_EXTENSIONS | THUMBNAIL_EXTENSIONS
+    all_extensions = (
+        VIDEO_EXTENSIONS | IMAGE_EXTENSIONS | TELEMETRY_EXTENSIONS
+        | PROXY_EXTENSIONS | THUMBNAIL_EXTENSIONS
+    )
     pattern = "**/*" if recursive else "*"
-    files = [f for f in directory.glob(pattern) if f.is_file() and f.suffix.lower() in all_extensions]
+    files = [
+        f for f in directory.glob(pattern)
+        if f.is_file() and f.suffix.lower() in all_extensions
+    ]
     return [probe_file(f) for f in sorted(files)]
 
 

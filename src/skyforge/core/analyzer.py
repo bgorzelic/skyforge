@@ -1,9 +1,9 @@
 """Video analysis pipeline — scene detection, keyframes, blur, motion, audio analysis."""
 
 import json
-import subprocess
 import re
-from dataclasses import dataclass, field, asdict
+import subprocess
+from dataclasses import asdict, dataclass, field
 from pathlib import Path
 
 import cv2
@@ -70,7 +70,7 @@ def detect_scene_changes(video_path: Path, threshold: float = 27.0) -> list[Scen
     Falls back to FFmpeg scdet if PySceneDetect is unavailable.
     """
     try:
-        from scenedetect import open_video, SceneManager
+        from scenedetect import SceneManager, open_video
         from scenedetect.detectors import ContentDetector
 
         video = open_video(str(video_path))
@@ -80,7 +80,7 @@ def detect_scene_changes(video_path: Path, threshold: float = 27.0) -> list[Scen
 
         scene_list = scene_manager.get_scene_list()
         changes = []
-        for i, (start, end) in enumerate(scene_list):
+        for start, _end in scene_list:
             changes.append(SceneChange(
                 timestamp=start.get_seconds(),
                 score=1.0,  # PySceneDetect doesn't expose per-cut scores directly
@@ -164,7 +164,7 @@ def extract_contact_sheet_montage(
         "-q:v", "3",
         str(output_path),
     ]
-    result = subprocess.run(cmd, capture_output=True, text=True, timeout=300)
+    subprocess.run(cmd, capture_output=True, text=True, timeout=300)
     if output_path.exists():
         return output_path
     return None
@@ -317,7 +317,9 @@ def analyze_frames(
 # Full video analysis orchestrator
 # ============================================================================
 
-def analyze_video(video_path: Path, output_dir: Path, sample_interval: float = 1.0) -> VideoAnalysis:
+def analyze_video(
+    video_path: Path, output_dir: Path, sample_interval: float = 1.0,
+) -> VideoAnalysis:
     """Run complete analysis on a single video file."""
     output_dir.mkdir(parents=True, exist_ok=True)
     analysis = VideoAnalysis(source_file=str(video_path))

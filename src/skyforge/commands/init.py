@@ -1,7 +1,6 @@
 """Init command — create new flight projects from a template."""
 
 from pathlib import Path
-from typing import Optional
 
 import typer
 from rich.console import Console
@@ -18,7 +17,7 @@ DEFAULT_DEVICES = ["Drone", "iPhone", "Meta_Glasses"]
 def new_project(
     name: str = typer.Argument(..., help="Project name (e.g., '2nd Flight', 'Downtown Survey')"),
     base_dir: Path = typer.Option(".", help="Parent directory for the project"),
-    devices: Optional[list[str]] = typer.Option(
+    devices: list[str] | None = typer.Option(
         None, "--device", "-d",
         help="Device directories to create (repeatable). Default: Drone, iPhone, Meta_Glasses",
     ),

@@ -4,11 +4,10 @@ from pathlib import Path
 
 import typer
 from rich.console import Console
+from rich.progress import BarColumn, Progress, SpinnerColumn, TextColumn, TimeElapsedColumn
 from rich.table import Table
-from rich.progress import Progress, SpinnerColumn, TextColumn, BarColumn, TimeElapsedColumn
 
-from skyforge.core.media import scan_directory, probe_file, VIDEO_EXTENSIONS, IMAGE_EXTENSIONS
-from skyforge.core.pipeline import PipelineConfig, run_pipeline, generate_manifest
+from skyforge.core.media import IMAGE_EXTENSIONS, VIDEO_EXTENSIONS, scan_directory
 from skyforge.core.project import detect_project_dir
 
 app = typer.Typer()
@@ -23,13 +22,13 @@ def scan(
     """Scan a directory for aerial footage and display a summary.
 
     Shows file details including codec, resolution, HDR status, and VFR detection.
+    Always runs locally (no FlightDeck required).
     """
     if not source.exists():
         console.print(f"[red]Error:[/red] Directory '{source}' not found.")
         raise typer.Exit(1)
 
     # If this is a project dir, scan only 01_RAW to avoid duplicates
-    from skyforge.core.project import detect_project_dir
     proj = detect_project_dir(source)
     scan_root = (proj / "01_RAW") if proj and (proj / "01_RAW").exists() else source
     files = scan_directory(scan_root, recursive)
@@ -83,7 +82,9 @@ def scan(
         if images:
             console.print(f"  [dim]{device}:[/dim] {len(images)} images")
         if other:
-            console.print(f"  [dim]{device}:[/dim] {len(other)} other files (telemetry/proxies/thumbnails)")
+            console.print(
+                f"  [dim]{device}:[/dim] {len(other)} other files (telemetry/proxies/thumbnails)"
+            )
 
     console.print()
     total_video = sum(1 for f in files if f.media_type == "video")
@@ -103,18 +104,103 @@ def run(
     crf: int = typer.Option(18, help="Video quality (CRF, lower = better, 18 = visually lossless)"),
     skip_proxies: bool = typer.Option(False, "--skip-proxies", help="Skip proxy generation"),
     dry_run: bool = typer.Option(False, "--dry-run", help="Preview without processing"),
+    local: bool = typer.Option(False, "--local", help="Force local processing (skip FlightDeck)"),
 ):
-    """Run the full ingest pipeline: normalize → proxy → manifest.
+    """Run the full ingest pipeline: normalize -> proxy -> manifest.
 
+    By default, tries FlightDeck API for processing. Use --local for offline mode.
     Automatically detects devices, handles HDR tonemapping, fixes VFR,
     and generates edit-ready proxies.
-
-    Example:
-        skyforge ingest run .
-        skyforge ingest run "/path/to/2nd Flight" --fps 60
-        skyforge ingest run . --dry-run
     """
-    # Find project root
+    from skyforge.config import load_config
+
+    config = load_config()
+
+    # Try FlightDeck API unless local mode
+    if not local and not config.local_mode and config.is_configured:
+        _run_remote(project_dir, config)
+        return
+
+    if not local and not config.local_mode and not config.is_configured:
+        console.print("[dim]FlightDeck not configured. Running locally.[/dim]")
+        console.print("[dim]Configure with: skyforge auth login[/dim]\n")
+
+    _run_local(project_dir, fps, crf, skip_proxies, dry_run)
+
+
+def _run_remote(project_dir: Path, config) -> None:
+    """Run ingest via FlightDeck API."""
+    from skyforge.client import FlightDeckClient, FlightDeckError, FlightDeckUnavailableError
+
+    proj = detect_project_dir(project_dir)
+    if not proj:
+        console.print("[red]Error:[/red] Not a skyforge project (no 01_RAW/ directory found).")
+        raise typer.Exit(1)
+
+    raw_dir = proj / "01_RAW"
+    videos = sorted([
+        f for d in raw_dir.iterdir() if d.is_dir()
+        for f in d.rglob("*")
+        if f.is_file() and f.suffix.lower() in VIDEO_EXTENSIONS
+    ])
+
+    if not videos:
+        console.print("[yellow]No video files found in 01_RAW/.[/yellow]")
+        raise typer.Exit(0)
+
+    console.print("\n[bold]Skyforge Ingest via FlightDeck[/bold]")
+    console.print(f"  Project: {proj}")
+    console.print(f"  Videos:  {len(videos)}")
+    console.print(f"  API:     {config.api_url}\n")
+
+    try:
+        with FlightDeckClient(config) as client:
+            if not client.health_check():
+                console.print(
+                    "[yellow]FlightDeck unreachable."
+                    " Falling back to local mode.[/yellow]"
+                )
+                _run_local(project_dir, 30, 18, False, False)
+                return
+
+            with Progress(
+                SpinnerColumn(),
+                TextColumn("[progress.description]{task.description}"),
+                BarColumn(),
+                TextColumn("[progress.percentage]{task.percentage:>3.0f}%"),
+                TimeElapsedColumn(),
+                console=console,
+            ) as progress:
+                task = progress.add_task("Uploading...", total=len(videos))
+
+                for video in videos:
+                    progress.update(task, description=f"Uploading [cyan]{video.name}[/cyan]")
+                    asset_id = client.upload(video)
+                    job_id = client.start_processing(asset_id)
+                    progress.update(
+                        task,
+                        description=f"Processing [cyan]{video.name}[/cyan] (job {job_id})",
+                    )
+                    progress.advance(task)
+
+            console.print("\n[bold green]Upload complete.[/bold green]")
+            console.print("[dim]Check status: skyforge status job <job_id>[/dim]")
+
+    except FlightDeckUnavailableError:
+        console.print("[yellow]FlightDeck unreachable. Falling back to local mode.[/yellow]\n")
+        _run_local(project_dir, 30, 18, False, False)
+    except FlightDeckError as e:
+        console.print(f"[red]FlightDeck error:[/red] {e}")
+        console.print("[yellow]Falling back to local mode.[/yellow]\n")
+        _run_local(project_dir, 30, 18, False, False)
+
+
+def _run_local(
+    project_dir: Path, fps: int, crf: int, skip_proxies: bool, dry_run: bool
+) -> None:
+    """Run ingest locally using Skyforge core modules."""
+    from skyforge.core.pipeline import PipelineConfig, generate_manifest, run_pipeline
+
     proj = detect_project_dir(project_dir)
     if not proj:
         console.print("[red]Error:[/red] Not a skyforge project (no 01_RAW/ directory found).")
@@ -125,20 +211,20 @@ def run(
     norm_dir = proj / "02_NORMALIZED"
     proxy_dir = proj / "02_PROXIES"
 
-    config = PipelineConfig(
+    pipeline_config = PipelineConfig(
         target_fps=fps,
         crf=crf,
         skip_proxies=skip_proxies,
         dry_run=dry_run,
     )
 
-    console.print(f"\n[bold]Skyforge Ingest Pipeline[/bold]")
+    console.print("\n[bold]Skyforge Ingest Pipeline (local)[/bold]")
     console.print(f"  Project:    {proj}")
     console.print(f"  Target FPS: {fps}")
     console.print(f"  CRF:        {crf}")
     console.print(f"  Proxies:    {'skip' if skip_proxies else 'yes'}")
     if dry_run:
-        console.print(f"  [yellow]DRY RUN — no files will be written[/yellow]")
+        console.print("  [yellow]DRY RUN — no files will be written[/yellow]")
     console.print()
 
     with Progress(
@@ -149,7 +235,6 @@ def run(
         TimeElapsedColumn(),
         console=console,
     ) as progress:
-        # Count total files first (recursive within device dirs)
         total = sum(
             1 for d in raw_dir.iterdir() if d.is_dir()
             for f in d.rglob("*")
@@ -160,7 +245,7 @@ def run(
         def on_progress(file: Path, device: str):
             progress.update(task, advance=1, description=f"[cyan]{device}[/cyan] {file.name}")
 
-        results = run_pipeline(raw_dir, norm_dir, proxy_dir, config, progress_callback=on_progress)
+        results = run_pipeline(raw_dir, norm_dir, proxy_dir, pipeline_config, on_progress)
 
     # Summary
     console.print()
@@ -173,7 +258,7 @@ def run(
     if skipped:
         console.print(f"[dim]Skipped (already done):[/dim] {len(skipped)} files")
     if tonemapped:
-        console.print(f"[yellow]HDR → SDR tonemapped:[/yellow] {len(tonemapped)} files")
+        console.print(f"[yellow]HDR -> SDR tonemapped:[/yellow] {len(tonemapped)} files")
     if errors:
         console.print(f"[red]Errors:[/red] {len(errors)} files")
         for e in errors:

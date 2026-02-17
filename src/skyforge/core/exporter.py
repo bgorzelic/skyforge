@@ -45,7 +45,7 @@ def trim_segment(
         cmd.extend(["-an"])
 
     cmd.extend(["-movflags", "+faststart", str(output)])
-    result = subprocess.run(cmd, capture_output=True, text=True, timeout=300)
+    subprocess.run(cmd, capture_output=True, text=True, timeout=300)
 
     if output.exists():
         return output
@@ -107,7 +107,7 @@ def export_report_ready(
         cmd.extend(["-an"])
 
     cmd.extend(["-movflags", "+faststart", str(output)])
-    result = subprocess.run(cmd, capture_output=True, text=True, timeout=300)
+    subprocess.run(cmd, capture_output=True, text=True, timeout=300)
 
     if output.exists():
         return output

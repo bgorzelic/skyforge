@@ -5,7 +5,7 @@ import subprocess
 from dataclasses import dataclass
 from pathlib import Path
 
-from skyforge.core.media import MediaInfo, probe_file, VIDEO_EXTENSIONS, IMAGE_EXTENSIONS
+from skyforge.core.media import IMAGE_EXTENSIONS, VIDEO_EXTENSIONS, MediaInfo, probe_file
 
 
 @dataclass

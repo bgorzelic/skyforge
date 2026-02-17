@@ -1,10 +1,10 @@
 """Segment selector — score and select usable video segments from analysis data."""
 
 import json
-from dataclasses import dataclass, asdict, field
+from dataclasses import asdict, dataclass, field
 from pathlib import Path
 
-from skyforge.core.analyzer import VideoAnalysis, FrameAnalysis
+from skyforge.core.analyzer import FrameAnalysis, VideoAnalysis
 
 
 @dataclass
@@ -135,7 +135,9 @@ def select_segments(
             avg_blur = sum(f.blur_score for f in seg_frames) / len(seg_frames)
             avg_brightness = sum(f.brightness for f in seg_frames) / len(seg_frames)
             avg_motion = sum(f.motion_score for f in seg_frames) / len(seg_frames)
-            avg_score = sum(s for f, s, t in frames if seg_start <= f.timestamp < seg_end) / len(seg_frames)
+            avg_score = sum(
+                s for f, s, t in frames if seg_start <= f.timestamp < seg_end
+            ) / len(seg_frames)
 
             # Determine tags
             tags = _tag_segment(seg_frames, avg_motion, avg_blur, avg_brightness, analysis)

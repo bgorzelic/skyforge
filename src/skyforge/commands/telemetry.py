@@ -6,7 +6,14 @@ import typer
 from rich.console import Console
 from rich.table import Table
 
-from skyforge.core.telemetry import parse_srt, export_json, export_csv, export_gpx, export_kml, summary
+from skyforge.core.telemetry import (
+    export_csv,
+    export_gpx,
+    export_json,
+    export_kml,
+    parse_srt,
+    summary,
+)
 
 app = typer.Typer()
 console = Console()
@@ -15,7 +22,9 @@ console = Console()
 @app.command("parse")
 def parse(
     srt_file: Path = typer.Argument(..., help="SRT telemetry file from drone"),
-    output: Path = typer.Option(None, "-o", "--output", help="Output file (auto-detect format from extension)"),
+    output: Path = typer.Option(
+        None, "-o", "--output", help="Output file (auto-detect format from extension)"
+    ),
     format: str = typer.Option("json", "-f", "--format", help="Output format: json, csv, gpx, kml"),
 ):
     """Parse a drone SRT telemetry file and export structured data.
@@ -101,9 +110,11 @@ def show_summary(
         table.add_row("End GPS", f"{lat:.6f}, {lon:.6f}")
 
     if stats.get("max_height_m") is not None:
-        table.add_row("Max Height", f"{stats['max_height_m']:.1f}m ({stats['max_height_ft']:.0f}ft)")
+        h = f"{stats['max_height_m']:.1f}m ({stats['max_height_ft']:.0f}ft)"
+        table.add_row("Max Height", h)
     if stats.get("max_speed_ms") is not None:
-        table.add_row("Max Speed", f"{stats['max_speed_ms']:.1f}m/s ({stats['max_speed_mph']:.1f}mph)")
+        s = f"{stats['max_speed_ms']:.1f}m/s ({stats['max_speed_mph']:.1f}mph)"
+        table.add_row("Max Speed", s)
     if stats.get("max_distance_m") is not None:
         table.add_row("Max Distance", f"{stats['max_distance_m']:.1f}m")
     if stats.get("iso_range"):
@@ -159,6 +170,7 @@ def parse_all(
 
         stats = summary(frames)
         height_str = f", max {stats['max_height_m']:.0f}m" if stats.get("max_height_m") else ""
-        console.print(f"  [green]{srt.name}[/green] → {out.name} ({len(frames)} points{height_str})")
+        msg = f"  [green]{srt.name}[/green] → {out.name}"
+        console.print(f"{msg} ({len(frames)} points{height_str})")
 
     console.print(f"\n[bold]Telemetry exported to:[/bold] {telemetry_dir}")

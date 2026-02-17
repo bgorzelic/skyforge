@@ -3,7 +3,7 @@
 import csv
 import json
 import re
-from dataclasses import dataclass, asdict
+from dataclasses import asdict, dataclass
 from pathlib import Path
 
 
@@ -47,7 +47,8 @@ class TelemetryFrame:
 
 
 # Pattern for ATOM drone SRT telemetry lines
-# Example: F1.8 SS:1/1603 ISO: 114 EV:0.0 H:1.2m D:0.1m HS:0.0m/s DS:0.1m/s GPS:(-119.937027,37.568775) ZOOM:1.10X
+# Example: F1.8 SS:1/1603 ISO: 114 EV:0.0 H:1.2m D:0.1m
+#   HS:0.0m/s DS:0.1m/s GPS:(-119.937027,37.568775) ZOOM:1.10X
 _TELEMETRY_PATTERN = re.compile(
     r"F([\d.]+)\s+"
     r"SS:([\d/]+)\s+"
@@ -176,6 +177,9 @@ def export_kml(frames: list[TelemetryFrame], output: Path, name: str = "Flight T
         for p in points
     )
 
+    takeoff = f"{points[0].longitude},{points[0].latitude},{points[0].height_m or 0}"
+    landing = f"{points[-1].longitude},{points[-1].latitude},{points[-1].height_m or 0}"
+
     kml = f"""<?xml version="1.0" encoding="UTF-8"?>
 <kml xmlns="http://www.opengis.net/kml/2.2">
   <Document>
@@ -199,13 +203,13 @@ def export_kml(frames: list[TelemetryFrame], output: Path, name: str = "Flight T
     <Placemark>
       <name>Takeoff</name>
       <Point>
-        <coordinates>{points[0].longitude},{points[0].latitude},{points[0].height_m or 0}</coordinates>
+        <coordinates>{takeoff}</coordinates>
       </Point>
     </Placemark>
     <Placemark>
       <name>Landing</name>
       <Point>
-        <coordinates>{points[-1].longitude},{points[-1].latitude},{points[-1].height_m or 0}</coordinates>
+        <coordinates>{landing}</coordinates>
       </Point>
     </Placemark>
   </Document>
@@ -234,7 +238,11 @@ def summary(frames: list[TelemetryFrame]) -> dict:
         "max_speed_ms": max(speeds) if speeds else None,
         "max_speed_mph": max(speeds) * 2.23694 if speeds else None,
         "max_distance_m": max(distances) if distances else None,
-        "iso_range": f"{min(f.iso for f in frames if f.iso)}-{max(f.iso for f in frames if f.iso)}" if any(f.iso for f in frames) else None,
+        "iso_range": (
+            f"{min(f.iso for f in frames if f.iso)}"
+            f"-{max(f.iso for f in frames if f.iso)}"
+            if any(f.iso for f in frames) else None
+        ),
     }
 
 
