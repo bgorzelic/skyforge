@@ -187,7 +187,10 @@ def run(
                     f"Install with: [bold]pip install {pkg}[/bold]"
                 )
                 raise typer.Exit(1) from None
-            except Exception as exc:
+            except ValueError as exc:
+                console.print(f"\n[red]Configuration error:[/red] {exc}")
+                raise typer.Exit(1) from None
+            except RuntimeError as exc:
                 console.print(f"\n[red]Error analyzing {video.name}:[/red] {exc}")
                 progress.advance(task)
                 continue

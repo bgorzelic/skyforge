@@ -422,6 +422,24 @@ def analyze_video(
     Returns:
         VideoVisionReport with per-frame findings and severity summary.
     """
+    # Validate configuration upfront — fail fast on missing API key or bad profile
+    if profile not in ANALYSIS_PROFILES:
+        msg = f"Unknown profile '{profile}'. Available: {', '.join(ANALYSIS_PROFILES)}"
+        raise ValueError(msg)
+
+    if provider not in ("claude", "openai"):
+        msg = f"Unknown provider '{provider}'. Use 'claude' or 'openai'."
+        raise ValueError(msg)
+
+    if not api_key:
+        env_var = "ANTHROPIC_API_KEY" if provider == "claude" else "OPENAI_API_KEY"
+        api_key = os.environ.get(env_var, "")
+
+    if not api_key:
+        env_var = "ANTHROPIC_API_KEY" if provider == "claude" else "OPENAI_API_KEY"
+        msg = f"No API key provided. Set {env_var} or pass api_key parameter."
+        raise ValueError(msg)
+
     cap = cv2.VideoCapture(str(video_path))
     if not cap.isOpened():
         msg = f"Cannot open video: {video_path}"
@@ -460,8 +478,8 @@ def analyze_video(
 
         try:
             findings = analyze_frame(frame, profile=profile, provider=provider, api_key=api_key)
-        except (ValueError, RuntimeError) as exc:
-            # Store the error as a single finding so processing continues
+        except RuntimeError as exc:
+            # Transient error (frame encoding, API timeout) — log and continue
             findings = [
                 VisionFinding(
                     category="other",

@@ -44,7 +44,7 @@ python3 -m venv .venv
 source .venv/bin/activate    # On Mac/Linux
 # .venv\Scripts\activate     # On Windows
 
-# Install skyforge
+# Install skyforge (core features only)
 pip install -e .
 ```
 
@@ -54,6 +54,29 @@ That's it. Test it works:
 skyforge version
 # Should print: skyforge v0.4.0
 ```
+
+### Optional Features
+
+Skyforge has optional extras you can install if you need them. You only pay for what you use:
+
+```bash
+# Object detection (YOLOv8) — finds cars, people, buildings in footage
+pip install -e ".[detect]"
+
+# AI vision analysis — sends frames to Claude/GPT-4o for inspection
+pip install -e ".[vision]"
+
+# Excel reports — export analysis data to .xlsx spreadsheets
+pip install -e ".[reports]"
+
+# EXIF GPS extraction from images
+pip install -e ".[ai]"
+
+# Install everything at once
+pip install -e ".[all]"
+```
+
+If you skip these, the core pipeline (ingest, analyze, transcode, telemetry) works without them. Commands that need missing packages will tell you exactly what to install.
 
 ## Usage
 
@@ -73,10 +96,11 @@ My First Flight/
 │   ├── Drone/           # DJI drone footage
 │   ├── iPhone/          # iPhone footage
 │   └── Meta_Glasses/    # Smart glasses footage
-├── 02_NORMALIZED/       # Skyforge puts processed video here
+├── 02_NORMALIZED/       # Processed video (common format)
 ├── 02_PROXIES/          # Smaller editing copies
-├── 03_PROJECT/          # Project workspace
-├── 04_EXPORTS/          # Final deliverables
+├── 03_ANALYSIS/         # Quality analysis data
+├── 04_SELECTS/          # Best segments (trimmed clips)
+├── 05_EXPORTS/          # Report-ready clips with timecodes
 └── project.json         # Project metadata
 ```
 
@@ -180,6 +204,94 @@ skyforge telemetry parse flight.SRT -f kml    # Export as KML
 ```
 
 This extracts GPS coordinates, altitude, speed, camera settings, and more from your flight data.
+
+### Step 8: Interactive Flight Maps (Optional)
+
+Turn your SRT telemetry into a visual map you can open in any browser:
+
+```bash
+# Single SRT file
+skyforge telemetry map flight.SRT
+
+# All SRT files in a project
+skyforge telemetry map-all "My First Flight"
+```
+
+Each map is a self-contained HTML file with:
+- Flight track on OpenStreetMap tiles
+- Altitude color gradient (green = low, red = high)
+- Start/end markers with stat popups
+- Distance, duration, max altitude, and max speed overlay
+
+No internet needed to view the maps after generation (tiles are loaded from CDN on open).
+
+### Step 9: Object Detection (Optional)
+
+Requires: `pip install -e ".[detect]"`
+
+Find objects in your footage using YOLOv8:
+
+```bash
+# All normalized videos in a project
+skyforge detect run "My First Flight"
+
+# Just one file
+skyforge detect file video_norm.mp4
+
+# Filter to specific classes
+skyforge detect run "My First Flight" --classes car,person,truck
+
+# See what it found
+skyforge detect summary "My First Flight"
+```
+
+Results go to `07_DETECTIONS/` as JSON with bounding boxes, confidence scores, and class names.
+
+### Step 10: AI Vision Analysis (Optional)
+
+Requires: `pip install -e ".[vision]"` and an API key (Claude or OpenAI).
+
+Send sampled frames to an AI vision model for domain-specific analysis:
+
+```bash
+# See available profiles
+skyforge vision profiles
+
+# Estimate cost before running
+skyforge vision run "My First Flight" --dry-run
+
+# Run general aerial survey
+skyforge vision run "My First Flight" --profile general
+
+# Use OpenAI instead of Claude
+skyforge vision run "My First Flight" --provider openai
+
+# Available profiles: general, infrastructure, construction,
+#                     agricultural, roof, solar
+```
+
+Set your API key as an environment variable:
+
+```bash
+export ANTHROPIC_API_KEY="sk-ant-..."   # For Claude
+export OPENAI_API_KEY="sk-..."          # For OpenAI
+```
+
+Results go to `08_VISION/` as JSON with findings, severity levels, and confidence scores.
+
+### Step 11: Export Reports (Optional)
+
+Export analysis data to spreadsheets:
+
+```bash
+# CSV (no extra dependencies needed)
+skyforge analyze export "My First Flight" --format csv
+
+# Excel (requires: pip install -e ".[reports]")
+skyforge analyze export "My First Flight" --format excel
+```
+
+CSV mode creates `report_analysis.csv` and `report_segments.csv`. Excel mode creates a multi-sheet workbook with Summary, Frames, Segments, and Detections sheets.
 
 ## All Commands
 
@@ -392,6 +504,25 @@ Each segment is automatically classified:
 
 ## Project Structure (for developers)
 
+### Flight Project Directories
+
+```
+My Flight/
+├── 01_RAW/              # Original footage by device
+├── 02_NORMALIZED/       # H.264, 30fps, SDR, CFR baseline
+├── 02_PROXIES/          # 1080p editing proxies
+├── 03_ANALYSIS/         # Frame analysis JSONs, contact sheets
+├── 04_SELECTS/          # Trimmed best segments
+├── 05_EXPORTS/          # Report-ready clips with timecode burn
+├── 05_TELEMETRY/        # Parsed telemetry + flight maps
+├── 06_TRANSCODED/       # Shareable versions (by preset)
+├── 07_DETECTIONS/       # YOLO object detection results
+├── 08_VISION/           # AI vision analysis reports
+└── project.json         # Project metadata
+```
+
+### Source Code
+
 ```
 src/skyforge/
 ├── cli.py              # Main entry point
@@ -401,20 +532,57 @@ src/skyforge/
 │   ├── init.py         # Project creation
 │   ├── ingest.py       # Scan + normalize + proxy
 │   ├── analyze.py      # Quality analysis + selection + export
-│   ├── telemetry.py    # SRT telemetry parsing
+│   ├── telemetry.py    # SRT telemetry parsing + flight maps
+│   ├── transcode.py    # Shareable transcodes with presets
+│   ├── detect.py       # YOLO object detection commands
+│   ├── vision.py       # AI vision analysis commands
 │   ├── flights.py      # Flight project listing
 │   ├── export.py       # FlightDeck deliverable export
 │   ├── status.py       # Job status checking
 │   └── auth.py         # API authentication
 └── core/               # Business logic (no CLI dependencies)
-    ├── media.py         # File detection, ffprobe, device ID
+    ├── media.py         # File detection, ffprobe, EXIF GPS
     ├── pipeline.py      # Normalization pipeline (FFmpeg)
     ├── analyzer.py      # Frame-level quality analysis (OpenCV)
     ├── selector.py      # Segment scoring and selection
     ├── exporter.py      # FFmpeg trimming and burn-in
+    ├── transcoder.py    # Preset-based transcoding
     ├── telemetry.py     # SRT parsing and GPS export
+    ├── geo.py           # Geo stats, GeoJSON, Leaflet maps
+    ├── detector.py      # YOLOv8 object detection
+    ├── vision.py        # AI vision analysis (Claude/GPT-4o)
+    ├── reporter.py      # CSV/Excel report generation
     └── project.py       # Project folder management
 ```
+
+## Troubleshooting
+
+**"command not found: skyforge"**
+You need to activate the virtual environment first: `source .venv/bin/activate`
+
+**"No module named 'ultralytics'" or "No module named 'anthropic'"**
+You need to install the optional feature. See [Optional Features](#optional-features) above.
+
+**"No API key provided. Set ANTHROPIC_API_KEY..."**
+Set your API key as an environment variable before running vision commands:
+```bash
+export ANTHROPIC_API_KEY="sk-ant-your-key-here"
+```
+
+**"Not a skyforge project (no 01_RAW/ directory found)"**
+You need to either `cd` into your flight project directory, or pass the path: `skyforge ingest scan "path/to/My Flight"`
+
+**"No 02_NORMALIZED/ directory. Run skyforge ingest run first."**
+You need to ingest before you can analyze, detect, or transcode. Run `skyforge ingest run` first.
+
+**Videos look washed out after ingesting**
+This usually means the source was HDR and got tonemapped to SDR. The result should look correct on standard monitors. If colors look wrong, file an issue.
+
+**Processing is very slow**
+Video processing is CPU-intensive. Tips:
+- Use `--skip-proxies` if you don't need editing proxies
+- Object detection is faster with a GPU. Install `torch` with CUDA/MPS support for your platform.
+- AI vision analysis costs money and time per frame. Use `--dry-run` to estimate costs first.
 
 ## Development
 

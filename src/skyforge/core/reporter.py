@@ -177,7 +177,7 @@ def export_project_excel(project_dir: Path, output: Path) -> Path:
         from openpyxl import Workbook
     except ImportError:
         raise ImportError(
-            "openpyxl is required for Excel export. Install with: pip install skyforge[reports]"
+            "openpyxl is required for Excel export. Install with: pip install 'skyforge[reports]'"
         ) from None
 
     wb = Workbook()

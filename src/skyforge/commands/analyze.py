@@ -345,7 +345,9 @@ def export_report(
         try:
             export_project_excel(proj, excel_path)
         except ImportError as exc:
-            console.print(f"[red]Error:[/red] {exc}")
+            from rich.markup import escape
+
+            console.print(f"[red]Error:[/red] {escape(str(exc))}")
             raise typer.Exit(1) from None
 
         console.print(f"[green]Wrote:[/green] {excel_path}")
