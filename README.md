@@ -1,299 +1,169 @@
 # Skyforge
 
-**A command-line tool for managing drone footage from raw files to polished deliverables.**
+**Turns raw footage from drones, phones, and action cams into an organized, analyzed, export-ready media library — from one terminal, no video editor required.**
+
+[![Python 3.11+](https://img.shields.io/badge/python-3.11%2B-3776AB?style=flat&logo=python&logoColor=white)](https://www.python.org/downloads/)
+[![FFmpeg](https://img.shields.io/badge/ffmpeg-required-007808?style=flat&logo=ffmpeg&logoColor=white)](https://ffmpeg.org/)
+[![OpenCV](https://img.shields.io/badge/opencv-frame%20analysis-5C3EE8?style=flat&logo=opencv&logoColor=white)](https://opencv.org/)
+[![Status: alpha](https://img.shields.io/badge/status-alpha-orange?style=flat)](#honest-status)
+
+The whole core workflow is three commands:
+
+```console
+$ skyforge init new "2nd Flight"
+
+Project created: 2nd Flight
+
+Structure:
+  2nd Flight/
+  ├── 01_RAW/
+  │   └── Drone/
+  │   └── iPhone/
+  │   └── Meta_Glasses/
+  ├── 02_NORMALIZED/
+  ├── 02_PROXIES/
+  ├── 03_PROJECT/
+  ├── 04_EXPORTS/
+  └── project.json
+
+Drop your raw footage into 01_RAW/<device>/ then run:
+  skyforge ingest run 2nd Flight
+
+$ skyforge ingest run "2nd Flight"
+FlightDeck not configured. Running locally.
+Configure with: skyforge auth login
+
+Skyforge Ingest Pipeline (local)
+  Project:    2nd Flight
+  Target FPS: 30
+  CRF:        18
+  Proxies:    yes
+
+⠹ Drone DJI_0042.MP4 ━━━━━━━━━━━━━━━━━━━━━━━━ 100% 0:06:31
+
+Processed: 7 files
+HDR -> SDR tonemapped: 3 files
+
+Manifest: 2nd Flight/manifest.json
+
+Normalized: 2nd Flight/02_NORMALIZED
+Proxies:    2nd Flight/02_PROXIES
+
+$ skyforge analyze run "2nd Flight"
+FlightDeck not configured. Running locally.
+Configure with: skyforge auth login
+
+Skyforge Video Analysis Pipeline (local)
+  Project:        2nd Flight
+  Videos:         7
+  Segment range:  5.0-25.0s
+  Min confidence: 0.3
+
+Phase 1: Analyzing footage...
+⠸ Drone DJI_0042_norm.mp4 ━━━━━━━━━━━━━━━━━━━ 100% 0:03:58
+
+Phase 2: Selecting usable segments...
+
+Total: 11 segments, 142s selected
+
+Phase 3: Exporting selected clips...
+⠼ Report DJI_0042_norm seg3 ━━━━━━━━━━━━━━━━━ 100% 0:02:14
+
+Analysis complete!
+  Analysis:    2nd Flight/03_ANALYSIS
+  Selects:     2nd Flight/04_SELECTS (11 clips)
+  Reports:     2nd Flight/05_EXPORTS (11 clips)
+  Master JSON: 2nd Flight/03_ANALYSIS/master_selects.json
+```
+
+*Illustrative session — file counts vary with your footage; the messages are Skyforge's actual output.*
+
+## What Is Skyforge
 
 Skyforge takes the chaos of multi-device aerial footage (DJI drones, iPhones, GoPros, Meta Ray-Ban glasses, Insta360 cameras) and turns it into an organized, analyzed, export-ready media library. It handles the tedious parts automatically: format normalization, quality analysis, segment selection, and report-ready exports with timecode burn-in.
 
-## What It Does
-
-Here's the typical workflow, in plain English:
-
-1. **You fly** and capture footage from one or more devices
-2. **You run `skyforge init`** to create an organized project folder
-3. **You drop your raw files** into the `01_RAW/` folder
-4. **You run `skyforge ingest run`** and Skyforge normalizes everything to a common baseline (same frame rate, same color space, same codec) so your footage plays nicely together in any editor
-5. **You run `skyforge analyze run`** and Skyforge watches your footage frame-by-frame, scores it for quality, picks the best segments, and exports polished clips
-
 No video editing skills required. No NLE software needed. Just your footage and a terminal.
+
+## Why It's Different
+
+Skyforge automates the specific failure modes of mixed-device aerial footage, in code:
+
+| Problem | What Skyforge does |
+|---|---|
+| Phone footage uses variable frame rate (VFR) and drifts out of sync in editors | Re-encodes to constant frame rate during ingest |
+| Drone HDR looks washed out on standard displays | Tonemaps HDR to SDR automatically |
+| Every device ships a different codec/fps/color space | Normalizes everything to one baseline: H.264, 30 fps, SDR |
+| Hours of footage, minutes of usable shots | Scores every sampled frame (blur, brightness, contrast, motion), merges high-scoring runs into segments, exports only the best |
+| Clients can't open project files | Exports 1080p clips with burned-in timecode and filename — playable anywhere |
+| Laptop too slow for big jobs | Optionally offloads processing to a [FlightDeck](#flightdeck-integration-advanced) server, with automatic fallback to local when it's unreachable |
+
+## How It Works
+
+```mermaid
+flowchart LR
+    A["01_RAW/<br/>DJI · iPhone · GoPro · ..."] -- "ingest run" --> B["02_NORMALIZED/<br/>H.264 · 30fps · SDR · CFR"]
+    B --> P["02_PROXIES/<br/>1080p edit proxies"]
+    B -- "analyze run" --> C["03_ANALYSIS/<br/>per-frame quality JSON"]
+    C --> D["04_SELECTS/<br/>trimmed best segments"]
+    D --> E["05_EXPORTS/<br/>timecode-burned deliverables"]
+    B -- "transcode run" --> F["06_TRANSCODED/<br/>web · review · archive · mobile"]
+```
+
+Details of the scoring model are in [How the Quality Analysis Works](#how-the-quality-analysis-works).
 
 ## Quick Start
 
 ### Prerequisites
 
-You need two things installed:
-
-1. **Python 3.11 or newer** - [Download here](https://www.python.org/downloads/) or `brew install python` on Mac
-2. **FFmpeg** - The engine that processes video. Install with `brew install ffmpeg` on Mac, or [download here](https://ffmpeg.org/download.html) for other platforms
-
-To check if you have them:
+1. **Python 3.11 or newer** — [download](https://www.python.org/downloads/) or `brew install python` on Mac
+2. **FFmpeg** — the engine that processes video: `brew install ffmpeg` on Mac, or [download](https://ffmpeg.org/download.html)
 
 ```bash
 python3 --version    # Should show 3.11 or higher
 ffmpeg -version      # Should show version info, not "command not found"
 ```
 
-### Install Skyforge
+### Install
 
 ```bash
-# Clone the repo
 git clone https://github.com/bgorzelic/skyforge.git
 cd skyforge
 
-# Create a virtual environment (keeps things clean)
 python3 -m venv .venv
 source .venv/bin/activate    # On Mac/Linux
 # .venv\Scripts\activate     # On Windows
 
-# Install skyforge (core features only)
 pip install -e .
+
+skyforge version
+# skyforge v0.4.0
 ```
 
-That's it. Test it works:
+### First flight
 
 ```bash
-skyforge version
-# Should print: skyforge v0.4.0
+skyforge init new "My First Flight"          # 1. Create a project
+# ...copy raw files into 01_RAW/<device>/    # 2. Add footage
+skyforge ingest scan "My First Flight"       # 3. (Optional) preview what was found
+skyforge ingest run "My First Flight"        # 4. Normalize + proxies
+skyforge analyze run "My First Flight"       # 5. Score, select, export
 ```
+
+`ingest scan` shows every video's codec, resolution, frame rate, HDR status, and detected issues (like VFR) before you commit to processing. You can customize device folders at init: `skyforge init new "Bridge Survey" -d Drone -d GoPro -d iPhone`.
 
 ### Optional Features
 
-Skyforge has optional extras you can install if you need them. You only pay for what you use:
+You only install what you use. The core pipeline (ingest, analyze, transcode, telemetry) needs no extras; commands that need a missing package tell you exactly what to install.
 
 ```bash
-# Object detection (YOLOv8) — finds cars, people, buildings in footage
-pip install -e ".[detect]"
-
-# AI vision analysis — sends frames to Claude/GPT-4o for inspection
-pip install -e ".[vision]"
-
-# Excel reports — export analysis data to .xlsx spreadsheets
-pip install -e ".[reports]"
-
-# EXIF GPS extraction from images
-pip install -e ".[ai]"
-
-# Install everything at once
-pip install -e ".[all]"
+pip install -e ".[detect]"    # Object detection (YOLOv8) — cars, people, buildings
+pip install -e ".[vision]"    # AI vision analysis — frames to Claude/GPT-4o
+pip install -e ".[reports]"   # Excel report export (.xlsx)
+pip install -e ".[ai]"        # EXIF GPS extraction from images
+pip install -e ".[all]"       # Everything
 ```
 
-If you skip these, the core pipeline (ingest, analyze, transcode, telemetry) works without them. Commands that need missing packages will tell you exactly what to install.
-
-## Usage
-
-### Step 1: Create a Project
-
-Every flight session gets its own project folder:
-
-```bash
-skyforge init new "My First Flight"
-```
-
-This creates a folder structure like:
-
-```
-My First Flight/
-├── 01_RAW/              # Put your raw footage here
-│   ├── Drone/           # DJI drone footage
-│   ├── iPhone/          # iPhone footage
-│   └── Meta_Glasses/    # Smart glasses footage
-├── 02_NORMALIZED/       # Processed video (common format)
-├── 02_PROXIES/          # Smaller editing copies
-├── 03_ANALYSIS/         # Quality analysis data
-├── 04_SELECTS/          # Best segments (trimmed clips)
-├── 05_EXPORTS/          # Report-ready clips with timecodes
-└── project.json         # Project metadata
-```
-
-You can customize the device folders:
-
-```bash
-skyforge init new "Bridge Survey" -d Drone -d GoPro -d iPhone
-```
-
-### Step 2: Add Your Footage
-
-Copy or move your raw video files into the `01_RAW/` subfolders. Put drone footage in `Drone/`, phone footage in `iPhone/`, etc.
-
-### Step 3: Scan (Optional)
-
-Before processing, you can preview what Skyforge found:
-
-```bash
-skyforge ingest scan "My First Flight"
-```
-
-This shows you a summary of every video file: codec, resolution, frame rate, HDR status, and any issues detected (like variable frame rate).
-
-### Step 4: Ingest & Normalize
-
-```bash
-skyforge ingest run "My First Flight"
-```
-
-This is where the magic starts. For each video file, Skyforge:
-
-- **Detects the device** automatically from the filename
-- **Fixes variable frame rate (VFR)** - phone footage is notorious for this and it causes sync issues in editors
-- **Converts HDR to SDR** - drone HDR footage gets tonemapped so it looks correct on standard displays
-- **Normalizes to a common format** - H.264, 30fps, consistent color space
-- **Generates editing proxies** - smaller 1080p copies for faster editing
-
-After this step, `02_NORMALIZED/` contains footage that's ready to work with, regardless of what device captured it.
-
-### Step 5: Analyze & Export
-
-```bash
-skyforge analyze run "My First Flight"
-```
-
-This is the smart part. Skyforge:
-
-1. **Watches every frame** and measures blur, brightness, contrast, and motion
-2. **Detects scene changes** using AI scene detection
-3. **Scores each segment** on a 0-1 confidence scale
-4. **Tags segments** automatically (static_shot, slow_pan, establishing_shot, reveal_shot, etc.)
-5. **Selects the best clips** based on quality thresholds
-6. **Exports polished clips** at 1080p with burned-in timecodes
-
-The results:
-
-- `03_ANALYSIS/` - Detailed JSON reports with per-frame quality data
-- `04_SELECTS/` - The trimmed best segments
-- `05_EXPORTS/` - Report-ready clips with timecode and filename overlays (great for sharing with clients who don't have video software)
-
-### Step 6: Transcode for Sharing (Optional)
-
-Need smaller files for client review, social media, or cloud storage? Skyforge has HandBrake-style presets built in:
-
-```bash
-# See what presets are available
-skyforge transcode presets
-
-# Transcode all your normalized footage to 720p H.265 (great for web/social)
-skyforge transcode run "My First Flight" --preset web
-
-# Need max compatibility for a client who uses Windows Media Player?
-skyforge transcode run "My First Flight" --preset review
-
-# Transcode just one file
-skyforge transcode file video_norm.mp4 --preset mobile
-
-# Preview what would happen without actually doing it
-skyforge transcode run "My First Flight" --preset web --dry-run
-```
-
-The built-in presets:
-
-| Preset | What It Does | Typical Size Reduction |
-|---|---|---|
-| `web` | 720p H.265 — small files for social media and websites | 70-80% smaller |
-| `review` | 1080p H.264 — plays everywhere, good for client review | 40-60% smaller |
-| `archive` | Full resolution H.265 — long-term storage, saves space | 30-50% smaller |
-| `mobile` | 480p H.264 — tiny files for phone preview | 85-95% smaller |
-
-Output goes to `06_TRANSCODED/<preset>/` mirroring your device folder structure.
-
-### Step 7: Parse Telemetry (Optional)
-
-If your drone records SRT telemetry (DJI Avata, ATOM drones, etc.):
-
-```bash
-skyforge telemetry parse flight.SRT
-skyforge telemetry parse flight.SRT -f gpx    # Export as GPX for Google Earth
-skyforge telemetry parse flight.SRT -f kml    # Export as KML
-```
-
-This extracts GPS coordinates, altitude, speed, camera settings, and more from your flight data.
-
-### Step 8: Interactive Flight Maps (Optional)
-
-Turn your SRT telemetry into a visual map you can open in any browser:
-
-```bash
-# Single SRT file
-skyforge telemetry map flight.SRT
-
-# All SRT files in a project
-skyforge telemetry map-all "My First Flight"
-```
-
-Each map is a self-contained HTML file with:
-- Flight track on OpenStreetMap tiles
-- Altitude color gradient (green = low, red = high)
-- Start/end markers with stat popups
-- Distance, duration, max altitude, and max speed overlay
-
-No internet needed to view the maps after generation (tiles are loaded from CDN on open).
-
-### Step 9: Object Detection (Optional)
-
-Requires: `pip install -e ".[detect]"`
-
-Find objects in your footage using YOLOv8:
-
-```bash
-# All normalized videos in a project
-skyforge detect run "My First Flight"
-
-# Just one file
-skyforge detect file video_norm.mp4
-
-# Filter to specific classes
-skyforge detect run "My First Flight" --classes car,person,truck
-
-# See what it found
-skyforge detect summary "My First Flight"
-```
-
-Results go to `07_DETECTIONS/` as JSON with bounding boxes, confidence scores, and class names.
-
-### Step 10: AI Vision Analysis (Optional)
-
-Requires: `pip install -e ".[vision]"` and an API key (Claude or OpenAI).
-
-Send sampled frames to an AI vision model for domain-specific analysis:
-
-```bash
-# See available profiles
-skyforge vision profiles
-
-# Estimate cost before running
-skyforge vision run "My First Flight" --dry-run
-
-# Run general aerial survey
-skyforge vision run "My First Flight" --profile general
-
-# Use OpenAI instead of Claude
-skyforge vision run "My First Flight" --provider openai
-
-# Available profiles: general, infrastructure, construction,
-#                     agricultural, roof, solar
-```
-
-Set your API key as an environment variable:
-
-```bash
-export ANTHROPIC_API_KEY="sk-ant-..."   # For Claude
-export OPENAI_API_KEY="sk-..."          # For OpenAI
-```
-
-Results go to `08_VISION/` as JSON with findings, severity levels, and confidence scores.
-
-### Step 11: Export Reports (Optional)
-
-Export analysis data to spreadsheets:
-
-```bash
-# CSV (no extra dependencies needed)
-skyforge analyze export "My First Flight" --format csv
-
-# Excel (requires: pip install -e ".[reports]")
-skyforge analyze export "My First Flight" --format excel
-```
-
-CSV mode creates `report_analysis.csv` and `report_segments.csv`. Excel mode creates a multi-sheet workbook with Summary, Frames, Segments, and Detections sheets.
-
-## All Commands
+## Command Reference
 
 | Command | What It Does |
 |---|---|
@@ -302,34 +172,28 @@ CSV mode creates `report_analysis.csv` and `report_segments.csv`. Excel mode cre
 | `skyforge ingest run <dir>` | Normalize footage and create proxies |
 | `skyforge analyze run <dir>` | Analyze quality, select segments, export clips |
 | `skyforge analyze summary <dir>` | Show analysis results summary |
-| `skyforge telemetry parse <file>` | Parse SRT telemetry to JSON/CSV/GPX/KML |
-| `skyforge telemetry summary <file>` | Show flight telemetry summary |
-| `skyforge telemetry parse-all <dir>` | Parse all SRT files in a project |
+| `skyforge analyze export <dir>` | Export analysis to CSV/Excel reports |
 | `skyforge transcode presets` | Show available transcode presets |
 | `skyforge transcode run <dir>` | Transcode all normalized footage |
 | `skyforge transcode file <file>` | Transcode a single video file |
+| `skyforge telemetry parse <file>` | Parse SRT telemetry to JSON/CSV/GPX/KML |
+| `skyforge telemetry summary <file>` | Show flight telemetry summary |
+| `skyforge telemetry parse-all <dir>` | Parse all SRT files in a project |
+| `skyforge telemetry map <file>` | Generate interactive flight map from SRT |
+| `skyforge telemetry map-all <dir>` | Generate maps for all SRT files in project |
 | `skyforge detect run <dir>` | Detect objects in normalized footage (YOLOv8) |
 | `skyforge detect file <file>` | Detect objects in a single video file |
 | `skyforge detect summary <dir>` | Show detection results summary |
 | `skyforge vision profiles` | Show available AI analysis profiles |
 | `skyforge vision run <dir>` | AI vision analysis of normalized footage |
 | `skyforge vision file <file>` | AI vision analysis of a single video |
-| `skyforge telemetry map <file>` | Generate interactive flight map from SRT |
-| `skyforge telemetry map-all <dir>` | Generate maps for all SRT files in project |
 | `skyforge flights list` | List all flight projects in a directory |
 | `skyforge flights info <dir>` | Show detailed info about a flight project |
 | `skyforge version` | Show version |
 
-Every command supports `--help` for detailed options:
+Every command supports `--help` for detailed options.
 
-```bash
-skyforge ingest run --help
-skyforge analyze run --help
-```
-
-## Options & Tuning
-
-### Ingest Options
+### Tuning the core pipeline
 
 ```bash
 skyforge ingest run "My Flight" \
@@ -337,11 +201,7 @@ skyforge ingest run "My Flight" \
   --crf 16           # Higher quality (lower CRF = better, 18 is default)
   --skip-proxies     # Don't generate proxy files
   --dry-run          # Preview what would happen without processing
-```
 
-### Analyze Options
-
-```bash
 skyforge analyze run "My Flight" \
   --min-segment 3      # Minimum clip length in seconds (default: 5)
   --max-segment 30     # Maximum clip length in seconds (default: 25)
@@ -350,69 +210,96 @@ skyforge analyze run "My Flight" \
   --dry-run            # Show what would be selected without exporting
 ```
 
-### Transcode Options
+## Beyond the Core Pipeline
+
+### Transcode for sharing
+
+HandBrake-style presets, built in. Output goes to `06_TRANSCODED/<preset>/`, mirroring your device folders.
 
 ```bash
-skyforge transcode run "My Flight" \
-  --preset web       # Which preset: web, review, archive, mobile
-  --dry-run          # Preview without transcoding
-  --no-skip-existing # Re-transcode even if output already exists
+skyforge transcode run "My First Flight" --preset web       # 720p H.265 for social/web
+skyforge transcode run "My First Flight" --preset web --dry-run
+skyforge transcode file video_norm.mp4 --preset mobile
 ```
+
+| Preset | What It Does | Typical Size Reduction |
+|---|---|---|
+| `web` | 720p H.265 — small files for social media and websites | 70-80% smaller |
+| `review` | 1080p H.264 — plays everywhere, good for client review | 40-60% smaller |
+| `archive` | Full resolution H.265 — long-term storage, saves space | 30-50% smaller |
+| `mobile` | 480p H.264 — tiny files for phone preview | 85-95% smaller |
+
+### Telemetry and flight maps
+
+If your drone records SRT telemetry (DJI Avata, ATOM drones, etc.), Skyforge extracts GPS coordinates, altitude, speed, and camera settings:
+
+```bash
+skyforge telemetry parse flight.SRT           # JSON/CSV
+skyforge telemetry parse flight.SRT -f gpx    # GPX for Google Earth
+skyforge telemetry parse flight.SRT -f kml    # KML
+skyforge telemetry map flight.SRT             # Interactive HTML map
+skyforge telemetry map-all "My First Flight"  # Maps for every SRT in the project
+```
+
+Each map is a self-contained HTML file: flight track on OpenStreetMap tiles, altitude color gradient (green = low, red = high), start/end markers, and distance/duration/max-altitude/max-speed stats. Map tiles load from a CDN when opened.
+
+### Object detection
+
+Requires `pip install -e ".[detect]"`. Results go to `07_DETECTIONS/` as JSON with bounding boxes, confidence scores, and class names.
+
+```bash
+skyforge detect run "My First Flight" --classes car,person,truck
+skyforge detect summary "My First Flight"
+```
+
+### AI vision analysis
+
+Requires `pip install -e ".[vision]"` and an API key. Sends sampled frames to a vision model for domain-specific inspection; results go to `08_VISION/` as JSON with findings, severity levels, and confidence scores.
+
+```bash
+export ANTHROPIC_API_KEY="sk-ant-..."               # For Claude (or OPENAI_API_KEY for OpenAI)
+skyforge vision profiles                             # general, infrastructure, construction,
+                                                     # agricultural, roof, solar
+skyforge vision run "My First Flight" --dry-run      # Estimate cost before spending
+skyforge vision run "My First Flight" --profile general
+skyforge vision run "My First Flight" --provider openai
+```
+
+### Spreadsheet reports
+
+```bash
+skyforge analyze export "My First Flight" --format csv     # No extra dependencies
+skyforge analyze export "My First Flight" --format excel   # Requires ".[reports]"
+```
+
+CSV mode creates `report_analysis.csv` and `report_segments.csv`. Excel mode creates a multi-sheet workbook with Summary, Frames, Segments, and Detections sheets.
 
 ## FlightDeck Integration (Advanced)
 
-Skyforge can optionally connect to FlightDeck, a full-featured drone media processing platform. When connected, heavy processing happens on the server instead of your laptop.
-
-### Setup
+Skyforge can optionally connect to FlightDeck, a drone media processing platform. When configured, `ingest run` uploads footage for server-side processing and `analyze run` submits analysis jobs — your laptop stays cool. When FlightDeck is offline or unconfigured, everything falls back to local processing automatically. You always get results either way.
 
 ```bash
-# Authenticate with FlightDeck
 skyforge auth login --api-key YOUR_API_KEY
-
-# Check connection
 skyforge auth status
 skyforge status health
 ```
-
-### How It Works
-
-When FlightDeck is configured:
-
-- `skyforge ingest run` uploads footage to FlightDeck for server-side processing
-- `skyforge analyze run` submits analysis jobs to FlightDeck
-- `skyforge export deliverable <segment_id>` requests report-ready exports
-- `skyforge status job <job_id>` checks processing progress
-
-When FlightDeck is not available (offline, not configured), everything falls back to local processing automatically. You always get results either way.
-
-### Force Local Mode
-
-```bash
-# Use --local flag on any command
-skyforge ingest run "My Flight" --local
-
-# Or set it globally
-export SKYFORGE_LOCAL_MODE=true
-```
-
-### FlightDeck Commands
 
 | Command | What It Does |
 |---|---|
 | `skyforge auth login` | Save your API key |
 | `skyforge auth status` | Show connection info |
 | `skyforge auth logout` | Remove stored credentials |
-| `skyforge status job <id>` | Check a processing job |
-| `skyforge status job <id> --watch` | Watch a job until it finishes |
+| `skyforge status job <id>` | Check a processing job (`--watch` to follow) |
 | `skyforge status health` | Test FlightDeck connectivity |
 | `skyforge export deliverable <id>` | Export a report-ready clip from FlightDeck |
 
+Force local mode with `--local` on any command, or `export SKYFORGE_LOCAL_MODE=true`.
+
 ### Configuration
 
-Skyforge stores config in `~/.skyforge/`:
+Config lives in `~/.skyforge/config.toml`; API keys are stored separately in `~/.skyforge/credentials.toml` with restricted file permissions.
 
 ```toml
-# ~/.skyforge/config.toml
 [api]
 url = "https://your-flightdeck-server.com"
 
@@ -426,8 +313,6 @@ target_fps = 30
 crf = 18
 ```
 
-API keys are stored separately in `~/.skyforge/credentials.toml` with restricted file permissions (only you can read it).
-
 Environment variables override everything:
 
 | Variable | Purpose |
@@ -438,7 +323,7 @@ Environment variables override everything:
 
 ## Supported Devices
 
-Skyforge automatically detects these devices from filename patterns:
+Skyforge detects devices automatically from filename patterns:
 
 | Device | Filename Pattern | Example |
 |---|---|---|
@@ -459,18 +344,12 @@ Skyforge automatically detects these devices from filename patterns:
 
 ## How the Quality Analysis Works
 
-If you're curious about what's happening under the hood:
-
-### Frame Analysis
-
 Every N seconds (default: 1), Skyforge grabs a frame and measures:
 
-- **Blur** - Uses the Laplacian variance method. A sharp frame scores high; a blurry frame (motion blur, out of focus) scores low.
-- **Brightness** - Average pixel intensity. Too dark or too bright gets a penalty.
-- **Contrast** - Standard deviation of pixel values. Flat, washed-out footage scores low.
-- **Motion** - Difference between consecutive frames. Some motion is good (cinematic movement); too much is bad (jerky footage).
-
-### Segment Scoring
+- **Blur** — Laplacian variance. Sharp frames score high; motion blur and missed focus score low.
+- **Brightness** — average pixel intensity. Too dark or too bright gets a penalty.
+- **Contrast** — standard deviation of pixel values. Flat, washed-out footage scores low.
+- **Motion** — difference between consecutive frames. Some motion is cinematic; too much is jerky.
 
 Each frame gets a quality score from 0 to 1:
 
@@ -485,11 +364,7 @@ Each frame gets a quality score from 0 to 1:
 | Excessive motion | -0.2 penalty |
 | Good exposure | +0.1 bonus |
 
-Consecutive high-scoring frames get merged into segments. Segments are split at scene changes and must meet minimum/maximum duration requirements.
-
-### Automatic Tagging
-
-Each segment is automatically classified:
+Consecutive high-scoring frames merge into segments, split at AI-detected scene changes and bounded by min/max duration. Each segment is auto-tagged:
 
 | Tag | Meaning |
 |---|---|
@@ -504,31 +379,31 @@ Each segment is automatically classified:
 
 ## Project Structure (for developers)
 
-### Flight Project Directories
+A flight project after running the full pipeline:
 
 ```
 My Flight/
-├── 01_RAW/              # Original footage by device
-├── 02_NORMALIZED/       # H.264, 30fps, SDR, CFR baseline
-├── 02_PROXIES/          # 1080p editing proxies
-├── 03_ANALYSIS/         # Frame analysis JSONs, contact sheets
-├── 04_SELECTS/          # Trimmed best segments
-├── 05_EXPORTS/          # Report-ready clips with timecode burn
-├── 05_TELEMETRY/        # Parsed telemetry + flight maps
-├── 06_TRANSCODED/       # Shareable versions (by preset)
-├── 07_DETECTIONS/       # YOLO object detection results
-├── 08_VISION/           # AI vision analysis reports
+├── 01_RAW/              # Original footage by device (created by init)
+├── 02_NORMALIZED/       # H.264, 30fps, SDR, CFR baseline (ingest)
+├── 02_PROXIES/          # 1080p editing proxies (ingest)
+├── 03_ANALYSIS/         # Frame analysis JSONs (analyze)
+├── 04_SELECTS/          # Trimmed best segments (analyze)
+├── 05_EXPORTS/          # Report-ready clips with timecode burn (analyze)
+├── 05_TELEMETRY/        # Parsed telemetry + flight maps (telemetry)
+├── 06_TRANSCODED/       # Shareable versions by preset (transcode)
+├── 07_DETECTIONS/       # YOLO object detection results (detect)
+├── 08_VISION/           # AI vision analysis reports (vision)
 └── project.json         # Project metadata
 ```
 
-### Source Code
+Source layout:
 
 ```
 src/skyforge/
 ├── cli.py              # Main entry point
 ├── client.py           # FlightDeck API client
 ├── config.py           # Configuration management
-├── commands/           # CLI commands (thin wrappers)
+├── commands/           # CLI commands (thin Typer wrappers)
 │   ├── init.py         # Project creation
 │   ├── ingest.py       # Scan + normalize + proxy
 │   ├── analyze.py      # Quality analysis + selection + export
@@ -557,45 +432,31 @@ src/skyforge/
 
 ## Troubleshooting
 
-**"command not found: skyforge"**
-You need to activate the virtual environment first: `source .venv/bin/activate`
+**"command not found: skyforge"** — activate the virtual environment first: `source .venv/bin/activate`
 
-**"No module named 'ultralytics'" or "No module named 'anthropic'"**
-You need to install the optional feature. See [Optional Features](#optional-features) above.
+**"No module named 'ultralytics'" or "No module named 'anthropic'"** — install the optional feature; see [Optional Features](#optional-features).
 
-**"No API key provided. Set ANTHROPIC_API_KEY..."**
-Set your API key as an environment variable before running vision commands:
-```bash
-export ANTHROPIC_API_KEY="sk-ant-your-key-here"
-```
+**"No API key provided. Set ANTHROPIC_API_KEY..."** — export your API key before running vision commands.
 
-**"Not a skyforge project (no 01_RAW/ directory found)"**
-You need to either `cd` into your flight project directory, or pass the path: `skyforge ingest scan "path/to/My Flight"`
+**"Not a skyforge project (no 01_RAW/ directory found)"** — `cd` into your flight project directory, or pass the path: `skyforge ingest scan "path/to/My Flight"`
 
-**"No 02_NORMALIZED/ directory. Run skyforge ingest run first."**
-You need to ingest before you can analyze, detect, or transcode. Run `skyforge ingest run` first.
+**"No 02_NORMALIZED/ directory. Run skyforge ingest run first."** — ingest must run before analyze, detect, or transcode.
 
-**Videos look washed out after ingesting**
-This usually means the source was HDR and got tonemapped to SDR. The result should look correct on standard monitors. If colors look wrong, file an issue.
+**Videos look washed out after ingesting** — the source was probably HDR and got tonemapped to SDR. The result should look correct on standard monitors. If colors look wrong, file an issue.
 
-**Processing is very slow**
-Video processing is CPU-intensive. Tips:
-- Use `--skip-proxies` if you don't need editing proxies
-- Object detection is faster with a GPU. Install `torch` with CUDA/MPS support for your platform.
-- AI vision analysis costs money and time per frame. Use `--dry-run` to estimate costs first.
+**Processing is very slow** — video processing is CPU-intensive. Use `--skip-proxies` if you don't need editing proxies; install `torch` with CUDA/MPS support to speed up object detection; use `--dry-run` on vision commands to estimate cost and time first.
+
+## Honest Status
+
+Skyforge is **alpha** (v0.4.0). The local pipeline (ingest, analyze, transcode, telemetry) is the most exercised path; FlightDeck integration depends on having a FlightDeck server. Expect rough edges.
 
 ## Development
 
 ```bash
-# Install with dev dependencies
 pip install -e ".[dev]"
 
-# Lint
 ruff check src/ --fix
 ruff format src/
-
-# Run tests
-pytest --cov=skyforge --cov-report=term-missing
 ```
 
 ## License
