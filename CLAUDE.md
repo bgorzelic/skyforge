@@ -1,3 +1,5 @@
+@AGENTS.md
+
 # Horizon by Yosemite — Skyforge CLI
 
 ## Project Overview
